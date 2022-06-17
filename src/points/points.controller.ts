@@ -10,7 +10,9 @@ import {
 import { PointsService } from './points.service';
 import { CreatePointDto } from './dto/create-point.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags(`points`)
 @Controller('points')
 export class PointsController {
   constructor(private readonly pointsService: PointsService) {}
