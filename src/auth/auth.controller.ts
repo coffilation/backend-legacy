@@ -1,44 +1,46 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { ApiTags } from '@nestjs/swagger';
+  HttpCode,
+  Request,
+  UseGuards,
+  UnauthorizedException,
+} from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+
+import { AuthService } from 'auth/auth.service'
+import { ObtainTokenPairDto } from 'auth/dto/obtain-token-pair.dto'
+import { RefreshTokenPairDto } from 'auth/dto/refresh-token-pair.dto'
+import { TriggerVerificationDto } from 'auth/dto/trigger-verification.dto'
+import { LocalAuthGuard } from 'auth/guards/local-auth.guard'
 
 @ApiTags(`auth`)
-@Controller('auth')
+@Controller(`auth`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @HttpCode(204)
+  @Post(`/number`)
+  sendCode(@Body() triggerVerificationDto: TriggerVerificationDto) {
+    return this.authService.sendSMS(triggerVerificationDto)
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(200)
+  @Post(`/login`)
+  login(@Body() obtainTokenPairDto: ObtainTokenPairDto, @Request() req) {
+    return this.authService.obtainTokenPair(req.user)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @HttpCode(200)
+  @Post(`/refresh`)
+  refresh(@Body() refreshTokenPairDto: RefreshTokenPairDto) {
+    try {
+      return this.authService.refreshTokenPair(refreshTokenPairDto)
+    } catch (error) {
+      console.error(error)
+      throw new UnauthorizedException()
+    }
   }
 }

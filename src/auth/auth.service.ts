@@ -1,26 +1,109 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { HttpService } from '@nestjs/axios'
+import { Inject, Injectable, CACHE_MANAGER } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { Cache } from 'cache-manager'
+import { lastValueFrom } from 'rxjs'
+
+import { User } from 'users/entities/user.entity'
+import { UsersService } from 'users/users.service'
+
+import { ObtainTokenPairDto } from 'auth/dto/obtain-token-pair.dto'
+import { RefreshTokenPairDto } from 'auth/dto/refresh-token-pair.dto'
+import { TriggerVerificationDto } from 'auth/dto/trigger-verification.dto'
+import { TokenPair } from 'auth/entities/tokenPair.entity'
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+
+    private httpService: HttpService,
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
+
+  private jwtAccessSecret = process.env.JWT_ACCESS_SECRET
+  private jwtRefreshSecret = process.env.JWT_REFRESH_SECRET
+  private firebaseApiKey = process.env.FIREBASE_API_KEY
+
+  async sendSMS(triggerVerificationDto: TriggerVerificationDto) {
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService.post<{ sessionInfo: string }>(
+          process.env.FIREBASE_SEND_VERIFICATION_CODE_ENDPOINT,
+          triggerVerificationDto,
+          { params: { key: this.firebaseApiKey } },
+        ),
+      )
+
+      await this.cacheManager.set(
+        triggerVerificationDto.phoneNumber,
+        data.sessionInfo,
+      )
+    } catch (error) {
+      console.error(error, error.message, error.response.data)
+    }
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async validateLocal({ phoneNumber, code }: ObtainTokenPairDto) {
+    const sessionInfo = await this.cacheManager.get(phoneNumber)
+
+    try {
+      await lastValueFrom(
+        this.httpService.post<{ sessionInfo: string }>(
+          process.env.FIREBASE_VERIFY_PHONE_NUMBER_ENDPOINT,
+          { sessionInfo, code },
+          { params: { key: this.firebaseApiKey } },
+        ),
+      )
+    } catch (error) {
+      console.error(error, error.message, error.response.data)
+      return null
+    }
+
+    await this.cacheManager.del(phoneNumber)
+
+    let user = await this.usersService.findOne(phoneNumber)
+    if (!user) {
+      user = await this.usersService.create({ phoneNumber })
+    }
+
+    return user
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  obtainTokenPair(user: User): TokenPair {
+    return {
+      access: this.jwtService.sign(
+        { ...user },
+        {
+          expiresIn: `1h`,
+          secret: this.jwtAccessSecret,
+        },
+      ),
+      refresh: this.jwtService.sign(
+        { ...user },
+        {
+          expiresIn: `30d`,
+          secret: this.jwtRefreshSecret,
+        },
+      ),
+    }
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  validateJWT({ phoneNumber }: User) {
+    return this.usersService.findOne(phoneNumber)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  refreshTokenPair({ refresh }: RefreshTokenPairDto): TokenPair {
+    const user = this.jwtService.verify<User & { exp: number; iat: number }>(
+      refresh,
+      {
+        secret: this.jwtRefreshSecret,
+      },
+    )
+    delete user.exp
+    delete user.iat
+
+    return this.obtainTokenPair(user)
   }
 }
