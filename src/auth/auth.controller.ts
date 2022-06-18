@@ -12,19 +12,12 @@ import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from 'auth/auth.service'
 import { ObtainTokenPairDto } from 'auth/dto/obtain-token-pair.dto'
 import { RefreshTokenPairDto } from 'auth/dto/refresh-token-pair.dto'
-import { TriggerVerificationDto } from 'auth/dto/trigger-verification.dto'
 import { LocalAuthGuard } from 'auth/guards/local-auth.guard'
 
 @ApiTags(`auth`)
 @Controller(`auth`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @HttpCode(204)
-  @Post(`/number`)
-  sendCode(@Body() triggerVerificationDto: TriggerVerificationDto) {
-    return this.authService.sendSMS(triggerVerificationDto)
-  }
 
   @UseGuards(LocalAuthGuard)
   @HttpCode(200)

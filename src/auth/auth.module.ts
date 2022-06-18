@@ -1,5 +1,4 @@
-import { HttpModule } from '@nestjs/axios'
-import { CacheModule, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 
@@ -12,8 +11,6 @@ import { LocalStrategy } from 'auth/strategies/local.strategy'
 
 @Module({
   imports: [
-    HttpModule,
-    CacheModule.register({ ttl: 300, max: 0 }),
     UsersModule,
     PassportModule,
     JwtModule.register({ secret: process.env.JWT_ACCESS_SECRET }),

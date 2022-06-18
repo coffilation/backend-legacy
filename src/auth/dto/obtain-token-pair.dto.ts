@@ -1,9 +1,11 @@
-import { IsPhoneNumber, IsString } from 'class-validator'
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class ObtainTokenPairDto {
-  @IsPhoneNumber()
-  phoneNumber: string
-
+  @IsNotEmpty()
   @IsString()
-  code: string
+  username: string
+
+  @IsNotEmpty()
+  @IsString()
+  password: string
 }

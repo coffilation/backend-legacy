@@ -1,74 +1,35 @@
-import { HttpService } from '@nestjs/axios'
-import { Inject, Injectable, CACHE_MANAGER } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { Cache } from 'cache-manager'
-import { lastValueFrom } from 'rxjs'
 
 import { User } from 'users/entities/user.entity'
 import { UsersService } from 'users/users.service'
 
 import { ObtainTokenPairDto } from 'auth/dto/obtain-token-pair.dto'
 import { RefreshTokenPairDto } from 'auth/dto/refresh-token-pair.dto'
-import { TriggerVerificationDto } from 'auth/dto/trigger-verification.dto'
-import { TokenPair } from 'auth/entities/tokenPair.entity'
+import { TokenPair } from 'auth/entities/token-pair.entity'
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-
-    private httpService: HttpService,
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
   private jwtAccessSecret = process.env.JWT_ACCESS_SECRET
   private jwtRefreshSecret = process.env.JWT_REFRESH_SECRET
-  private firebaseApiKey = process.env.FIREBASE_API_KEY
 
-  async sendSMS(triggerVerificationDto: TriggerVerificationDto) {
-    try {
-      const { data } = await lastValueFrom(
-        this.httpService.post<{ sessionInfo: string }>(
-          process.env.FIREBASE_SEND_VERIFICATION_CODE_ENDPOINT,
-          triggerVerificationDto,
-          { params: { key: this.firebaseApiKey } },
-        ),
-      )
-
-      await this.cacheManager.set(
-        triggerVerificationDto.phoneNumber,
-        data.sessionInfo,
-      )
-    } catch (error) {
-      console.error(error, error.message, error.response.data)
-    }
+  async validateLocal({ username, password }: ObtainTokenPairDto) {
+    return this.serializeUserFields(
+      await this.usersService.validateUser({ username, password }),
+    )
   }
 
-  async validateLocal({ phoneNumber, code }: ObtainTokenPairDto) {
-    const sessionInfo = await this.cacheManager.get(phoneNumber)
+  async validateJWT({ username }: User) {
+    return this.serializeUserFields(await this.usersService.findOne(username))
+  }
 
-    try {
-      await lastValueFrom(
-        this.httpService.post<{ sessionInfo: string }>(
-          process.env.FIREBASE_VERIFY_PHONE_NUMBER_ENDPOINT,
-          { sessionInfo, code },
-          { params: { key: this.firebaseApiKey } },
-        ),
-      )
-    } catch (error) {
-      console.error(error, error.message, error.response.data)
-      return null
-    }
-
-    await this.cacheManager.del(phoneNumber)
-
-    let user = await this.usersService.findOne(phoneNumber)
-    if (!user) {
-      user = await this.usersService.create({ phoneNumber })
-    }
-
-    return user
+  serializeUserFields(user: User) {
+    return { username: user.username }
   }
 
   obtainTokenPair(user: User): TokenPair {
@@ -88,10 +49,6 @@ export class AuthService {
         },
       ),
     }
-  }
-
-  validateJWT({ phoneNumber }: User) {
-    return this.usersService.findOne(phoneNumber)
   }
 
   refreshTokenPair({ refresh }: RefreshTokenPairDto): TokenPair {
