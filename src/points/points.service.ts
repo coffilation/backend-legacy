@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common'
 import { CreatePointDto } from './dto/create-point.dto'
 import { UpdatePointDto } from './dto/update-point.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Point } from 'points/entities/point.entity'
 
 @Injectable()
 export class PointsService {
-  create(createPointDto: CreatePointDto) {
-    return 'This action adds a new point'
+  constructor(
+    @InjectRepository(Point)
+    private pointsRepository: Repository<Point>,
+  ) {}
+
+  async create(createPointDto: CreatePointDto) {
+    return this.pointsRepository.findOneBy(
+      await this.pointsRepository.save({
+        ...createPointDto,
+      }),
+    )
   }
 
   findAll() {
-    return `This action returns all points`
+    return this.pointsRepository.find()
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} point`
+    return this.pointsRepository.findOneBy({ id })
   }
 
-  update(id: number, updatePointDto: UpdatePointDto) {
-    return `This action updates a #${id} point`
+  async update(id: number, updatePointDto: UpdatePointDto) {
+    return this.pointsRepository.findOneBy(
+      await this.pointsRepository.save({ ...updatePointDto, id }),
+    )
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} point`
+  async remove(id: number) {
+    await this.pointsRepository.delete(id)
   }
 }

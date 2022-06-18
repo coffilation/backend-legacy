@@ -6,12 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  HttpCode,
 } from '@nestjs/common'
 import { PointsService } from './points.service'
 import { CreatePointDto } from './dto/create-point.dto'
 import { UpdatePointDto } from './dto/update-point.dto'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags(`points`)
 @Controller('points')
 export class PointsController {
@@ -37,6 +42,7 @@ export class PointsController {
     return this.pointsService.update(+id, updatePointDto)
   }
 
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.pointsService.remove(+id)
