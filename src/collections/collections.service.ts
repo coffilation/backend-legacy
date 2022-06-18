@@ -1,26 +1,63 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCollectionDto } from './dto/create-collection.dto'
-import { UpdateCollectionDto } from './dto/update-collection.dto'
+import { Collection } from 'collections/entities/collection.entity'
+import { In, Repository } from 'typeorm'
+import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 
 @Injectable()
 export class CollectionsService {
-  create(createCollectionDto: CreateCollectionDto) {
-    return 'This action adds a new collection'
+  constructor(
+    @InjectRepository(Collection)
+    private collectionsRepository: Repository<Collection>,
+  ) {}
+
+  async create({ points, ...createCollectionDto }: CreateCollectionDto) {
+    const pointEntities = await this.collectionsRepository.findBy({
+      id: In(points),
+    })
+
+    return this.collectionsRepository.findOne({
+      where: await this.collectionsRepository.save({
+        ...createCollectionDto,
+        points: pointEntities,
+      }),
+      relations: [`points`],
+    })
   }
 
   findAll() {
-    return `This action returns all collections`
+    return this.collectionsRepository.find({ relations: [`points`] })
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} collection`
+    return this.collectionsRepository.findOne({
+      where: { id },
+      relations: [`points`],
+    })
   }
 
-  update(id: number, updateCollectionDto: UpdateCollectionDto) {
-    return `This action updates a #${id} collection`
+  async update(
+    id: number,
+    { points, ...updateCollectionDto }: UpdateCollectionDto,
+  ) {
+    const pointEntities = await this.collectionsRepository.findBy({
+      id: In(points),
+    })
+
+    await this.collectionsRepository.save({
+      ...updateCollectionDto,
+      points: pointEntities,
+      id,
+    })
+
+    return this.collectionsRepository.findOne({
+      where: { id },
+      relations: [`points`],
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} collection`
+  async remove(id: number) {
+    await this.collectionsRepository.delete(id)
   }
 }

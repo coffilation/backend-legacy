@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config'
 
 export = {
   host: process.env.DB_HOST,
@@ -8,4 +8,4 @@ export = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   synchronize: true,
-};
+}
