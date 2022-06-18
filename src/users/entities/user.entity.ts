@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { Exclude } from 'class-transformer'
-import { ApiHideProperty } from "@nestjs/swagger";
+import { ApiHideProperty } from '@nestjs/swagger'
 
 @Entity()
 export class User {
