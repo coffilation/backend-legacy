@@ -15,8 +15,8 @@ import { UpdatePointDto } from './dto/update-point.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 @ApiTags(`points`)
 @Controller('points')
 export class PointsController {

@@ -14,6 +14,8 @@ async function bootstrap() {
     new FastifyAdapter({ logger: true }),
   )
 
+  app.enableCors()
+
   const config = new DocumentBuilder().addBearerAuth().build()
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
@@ -30,6 +32,6 @@ async function bootstrap() {
     },
   })
 
-  await app.listen(3000)
+  await app.listen(8000)
 }
 bootstrap()

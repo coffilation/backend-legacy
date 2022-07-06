@@ -13,4 +13,7 @@ export class Point {
 
   @Column({ type: `float` })
   longitude: number
+
+  @Column({ unique: true })
+  osmId: number
 }

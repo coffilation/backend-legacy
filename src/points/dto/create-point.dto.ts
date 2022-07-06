@@ -12,4 +12,8 @@ export class CreatePointDto {
   @IsNotEmpty()
   @IsNumber()
   longitude: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  osmId: number
 }
