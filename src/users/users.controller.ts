@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
+import { User } from 'common/decorators/user.decorator'
 
 @ApiTags(`users`)
 @Controller('users')
@@ -25,11 +26,18 @@ export class UsersController {
     return this.usersService.create(createUserDto)
   }
 
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // findAll() {
+  //   return this.usersService.findAll()
+  // }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll() {
-    return this.usersService.findAll()
+  @Get('me')
+  findMe(@User() user) {
+    return this.usersService.findMe(user)
   }
 
   @ApiBearerAuth()

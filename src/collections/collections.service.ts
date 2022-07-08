@@ -4,6 +4,7 @@ import { CreateCollectionDto } from './dto/create-collection.dto'
 import { Collection } from 'collections/entities/collection.entity'
 import { In, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
+import { User } from 'users/entities/user.entity'
 
 @Injectable()
 export class CollectionsService {
@@ -12,7 +13,10 @@ export class CollectionsService {
     private collectionsRepository: Repository<Collection>,
   ) {}
 
-  async create({ points, ...createCollectionDto }: CreateCollectionDto) {
+  async create(
+    { points, ...createCollectionDto }: CreateCollectionDto,
+    author: User,
+  ) {
     const pointEntities = await this.collectionsRepository.findBy({
       id: In(points),
     })
@@ -21,13 +25,21 @@ export class CollectionsService {
       where: await this.collectionsRepository.save({
         ...createCollectionDto,
         points: pointEntities,
+        authorId: author.id,
       }),
-      relations: [`points`],
+      relations: [`points`, `author`],
     })
   }
 
-  findAll() {
-    return this.collectionsRepository.find({ relations: [`points`] })
+  findAll(authorId?: number) {
+    if (authorId) {
+      return this.collectionsRepository.find({
+        relations: [`points`, `author`],
+        where: { authorId: authorId },
+      })
+    }
+
+    return this.collectionsRepository.find({ relations: [`points`, `author`] })
   }
 
   findOne(id: number) {

@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   serializeUserFields(user: User) {
-    return { username: user.username }
+    return user ? { username: user.username, id: user.id } : undefined
   }
 
   obtainTokenPair(user: User): TokenPair {

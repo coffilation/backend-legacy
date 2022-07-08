@@ -34,6 +34,10 @@ export class UsersService {
     return this.usersRepository.findOneBy({ username })
   }
 
+  async findMe(user: User) {
+    return this.usersRepository.findOneBy(user)
+  }
+
   async update(username: string, updateUserDto: UpdateUserDto) {
     return this.usersRepository.findOneBy(
       await this.usersRepository.save({ ...updateUserDto, username }),
@@ -54,7 +58,7 @@ export class UsersService {
   }: Pick<User, `username` | `password`>) {
     const user = await this.usersRepository.findOneBy({ username })
 
-    if (compareSync(password, user.password)) {
+    if (user?.password && compareSync(password, user.password)) {
       return user
     }
   }
