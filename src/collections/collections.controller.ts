@@ -15,6 +15,7 @@ import { UpdateCollectionDto } from './dto/update-collection.dto'
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { User } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
+import { AddPointDto } from "collections/dto/add-point.dto";
 
 @ApiTags(`collections`)
 @Controller('collections')
@@ -37,6 +38,11 @@ export class CollectionsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.collectionsService.findOne(+id)
+  }
+
+  @Post(':id/add-point')
+  addPoint(@Param('id') id: string, @Body() addPointDto: AddPointDto) {
+    return this.collectionsService.addPoint(+id, addPointDto)
   }
 
   @Patch(':id')
