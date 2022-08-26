@@ -20,7 +20,7 @@ export class Collection {
   @Column()
   name: string
 
-  @ManyToMany(() => Point)
+  @ManyToMany(() => Point, (point) => point.collections)
   @JoinTable()
   points: Point[]
 

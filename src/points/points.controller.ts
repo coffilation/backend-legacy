@@ -32,19 +32,24 @@ export class PointsController {
     return this.pointsService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pointsService.findOne(+id)
+  @Get(':osmId')
+  findOne(@Param('osmId') osmId: string) {
+    return this.pointsService.findOne(+osmId)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePointDto: UpdatePointDto) {
-    return this.pointsService.update(+id, updatePointDto)
+  @Get(':osmId/collections')
+  findPointCollections(@Param('osmId') osmId: string) {
+    return this.pointsService.findPointCollections(+osmId)
+  }
+
+  @Patch(':osmId')
+  update(@Param('osmId') osmId: string, @Body() updatePointDto: UpdatePointDto) {
+    return this.pointsService.update(+osmId, updatePointDto)
   }
 
   @HttpCode(204)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pointsService.remove(+id)
+  @Delete(':osmId')
+  remove(@Param('osmId') osmId: string) {
+    return this.pointsService.remove(+osmId)
   }
 }

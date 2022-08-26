@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Collection } from 'collections/entities/collection.entity'
+import { ApiHideProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer'
 
 @Entity()
 export class Point {
@@ -7,6 +10,11 @@ export class Point {
 
   @Column()
   name: string
+
+  @ApiHideProperty()
+  @Exclude()
+  @ManyToMany(() => Collection, (collection) => collection.points)
+  collections: Collection[]
 
   @Column({ type: `float` })
   latitude: number

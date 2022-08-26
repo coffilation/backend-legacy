@@ -32,14 +32,14 @@ export class CollectionsService {
         points: pointEntities,
         authorId: author.id,
       }),
-      relations: [`points`, `author`],
+      relations: { points: true, author: true },
     })
   }
 
   findAll(authorId?: number) {
     if (authorId) {
       return this.collectionsRepository.find({
-        relations: [`points`, `author`],
+        relations: { points: true, author: true },
         where: { authorId: authorId },
       })
     }
