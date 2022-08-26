@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { Collection } from 'collections/entities/collection.entity'
-import { In, Repository } from 'typeorm'
+import { In, Not, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 import { User } from 'users/entities/user.entity'
-import { AddPointDto } from 'collections/dto/add-point.dto'
+import { CollectionPointsDto } from 'collections/dto/collection-points.dto'
 import { Point } from 'points/entities/point.entity'
 
 @Injectable()
@@ -54,13 +54,7 @@ export class CollectionsService {
     })
   }
 
-  async addPoint(collectionId: number, { pointId }: AddPointDto) {
-    const point = await this.pointsRepository.findOneBy({ id: pointId })
-
-    if (!point) {
-      return new NotFoundException(`Point with id ${pointId} not found`)
-    }
-
+  async getCollection(collectionId: number) {
     const collection = await this.collectionsRepository.findOne({
       where: {
         id: collectionId,
@@ -69,31 +63,45 @@ export class CollectionsService {
     })
 
     if (!collection) {
-      return new NotFoundException(
+      throw new NotFoundException(
         `Collection with id ${collectionId} not found`,
       )
     }
 
+    return collection
+  }
+
+  async addPoints(collectionId: number, { pointIds }: CollectionPointsDto) {
+    const collection = await this.getCollection(collectionId)
+
+    const points = await this.pointsRepository.findBy({ id: In(pointIds) })
+
     return this.collectionsRepository.findOne({
       where: await this.collectionsRepository.save({
         ...collection,
-        points: [...collection.points, point],
+        points: [...collection.points, ...points],
       }),
       relations: [`points`, `author`],
     })
   }
 
-  async update(
-    id: number,
-    { points, ...updateCollectionDto }: UpdateCollectionDto,
-  ) {
-    const pointEntities = await this.collectionsRepository.findBy({
-      id: In(points),
-    })
+  async removePoints(collectionId: number, { pointIds }: CollectionPointsDto) {
+    const collection = await this.getCollection(collectionId)
 
+    const points = await this.pointsRepository.findBy({ id: Not(In(pointIds)) })
+
+    return this.collectionsRepository.findOne({
+      where: await this.collectionsRepository.save({
+        ...collection,
+        points,
+      }),
+      relations: [`points`, `author`],
+    })
+  }
+
+  async update(id: number, updateCollectionDto: UpdateCollectionDto) {
     await this.collectionsRepository.save({
       ...updateCollectionDto,
-      points: pointEntities,
       id,
     })
 
