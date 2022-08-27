@@ -3,5 +3,5 @@ import { CreateCollectionDto } from './create-collection.dto'
 
 export class UpdateCollectionDto extends OmitType(
   PartialType(CreateCollectionDto),
-  [`points`],
+  [`places`],
 ) {}

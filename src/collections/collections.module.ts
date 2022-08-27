@@ -3,10 +3,10 @@ import { CollectionsService } from './collections.service'
 import { CollectionsController } from './collections.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Collection } from 'collections/entities/collection.entity'
-import { Point } from 'points/entities/point.entity'
+import { Place } from 'places/entities/place.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Point, Collection])],
+  imports: [TypeOrmModule.forFeature([Place, Collection])],
   controllers: [CollectionsController],
   providers: [CollectionsService],
 })

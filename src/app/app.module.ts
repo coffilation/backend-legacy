@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { UsersModule } from 'users/users.module'
-import { PointsModule } from 'points/points.module'
+import { PlacesModule } from 'places/places.module'
 import { CollectionsModule } from 'collections/collections.module'
 import { ReviewsModule } from 'reviews/reviews.module'
 import { AuthModule } from 'auth/auth.module'
@@ -22,7 +22,7 @@ import { AuthModule } from 'auth/auth.module'
     }),
     AuthModule,
     CollectionsModule,
-    PointsModule,
+    PlacesModule,
     ReviewsModule,
     UsersModule,
   ],

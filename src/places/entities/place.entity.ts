@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Collection } from 'collections/entities/collection.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 
 @Entity()
-export class Point {
+export class Place {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -13,7 +13,7 @@ export class Point {
 
   @ApiHideProperty()
   @Exclude()
-  @ManyToMany(() => Collection, (collection) => collection.points)
+  @ManyToMany(() => Collection, (collection) => collection.places)
   collections: Collection[]
 
   @Column({ type: `float` })
@@ -22,6 +22,6 @@ export class Point {
   @Column({ type: `float` })
   longitude: number
 
-  @Column({ unique: true })
+  @Column({ unique: true, type: `bigint` })
   osmId: number
 }

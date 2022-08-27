@@ -5,8 +5,8 @@ import { Collection } from 'collections/entities/collection.entity'
 import { In, Not, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 import { User } from 'users/entities/user.entity'
-import { CollectionPointsDto } from 'collections/dto/collection-points.dto'
-import { Point } from 'points/entities/point.entity'
+import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
+import { Place } from 'places/entities/place.entity'
 
 @Injectable()
 export class CollectionsService {
@@ -14,43 +14,45 @@ export class CollectionsService {
     @InjectRepository(Collection)
     private collectionsRepository: Repository<Collection>,
 
-    @InjectRepository(Point)
-    private pointsRepository: Repository<Point>,
+    @InjectRepository(Place)
+    private placesRepository: Repository<Place>,
   ) {}
 
   async create(
-    { points, ...createCollectionDto }: CreateCollectionDto,
+    { places, ...createCollectionDto }: CreateCollectionDto,
     author: User,
   ) {
-    const pointEntities = await this.pointsRepository.findBy({
-      id: In(points),
+    const placeEntities = await this.placesRepository.findBy({
+      id: In(places),
     })
 
     return this.collectionsRepository.findOne({
       where: await this.collectionsRepository.save({
         ...createCollectionDto,
-        points: pointEntities,
+        places: placeEntities,
         authorId: author.id,
       }),
-      relations: { points: true, author: true },
+      relations: { places: true, author: true },
     })
   }
 
   findAll(authorId?: number) {
     if (authorId) {
       return this.collectionsRepository.find({
-        relations: { points: true, author: true },
+        relations: { places: true, author: true },
         where: { authorId: authorId },
       })
     }
 
-    return this.collectionsRepository.find({ relations: [`points`, `author`] })
+    return this.collectionsRepository.find({
+      relations: { places: true, author: true },
+    })
   }
 
   findOne(id: number) {
     return this.collectionsRepository.findOne({
       where: { id },
-      relations: [`points`],
+      relations: { places: true },
     })
   }
 
@@ -59,7 +61,7 @@ export class CollectionsService {
       where: {
         id: collectionId,
       },
-      relations: [`points`, `author`],
+      relations: { places: true, author: true },
     })
 
     if (!collection) {
@@ -71,31 +73,31 @@ export class CollectionsService {
     return collection
   }
 
-  async addPoints(collectionId: number, { pointIds }: CollectionPointsDto) {
+  async addPlaces(collectionId: number, { placeIds }: CollectionPlacesDto) {
     const collection = await this.getCollection(collectionId)
 
-    const points = await this.pointsRepository.findBy({ id: In(pointIds) })
+    const places = await this.placesRepository.findBy({ id: In(placeIds) })
 
     return this.collectionsRepository.findOne({
       where: await this.collectionsRepository.save({
         ...collection,
-        points: [...collection.points, ...points],
+        places: [...collection.places, ...places],
       }),
-      relations: [`points`, `author`],
+      relations: { places: true, author: true },
     })
   }
 
-  async removePoints(collectionId: number, { pointIds }: CollectionPointsDto) {
+  async removePlaces(collectionId: number, { placeIds }: CollectionPlacesDto) {
     const collection = await this.getCollection(collectionId)
 
-    const points = await this.pointsRepository.findBy({ id: Not(In(pointIds)) })
+    const places = await this.placesRepository.findBy({ id: Not(In(placeIds)) })
 
     return this.collectionsRepository.findOne({
       where: await this.collectionsRepository.save({
         ...collection,
-        points,
+        places: places,
       }),
-      relations: [`points`, `author`],
+      relations: { places: true, author: true },
     })
   }
 
@@ -107,7 +109,7 @@ export class CollectionsService {
 
     return this.collectionsRepository.findOne({
       where: { id },
-      relations: [`points`],
+      relations: { places: true },
     })
   }
 

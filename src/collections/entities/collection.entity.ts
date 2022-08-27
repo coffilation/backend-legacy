@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn
 } from 'typeorm'
-import { Point } from 'points/entities/point.entity'
+import { Place } from 'places/entities/place.entity'
 import { User } from 'users/entities/user.entity'
 import { ApiHideProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
@@ -20,9 +20,9 @@ export class Collection {
   @Column()
   name: string
 
-  @ManyToMany(() => Point, (point) => point.collections)
+  @ManyToMany(() => Place, (place) => place.collections)
   @JoinTable()
-  points: Point[]
+  places: Place[]
 
   @ApiHideProperty()
   @Exclude()

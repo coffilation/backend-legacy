@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber } from 'class-validator'
 
-export class RemovePointsDto {
+export class CollectionPlacesDto {
   @IsNotEmpty()
   @IsNumber({}, { each: true })
-  pointIds: number[]
+  placeIds: number[]
 }

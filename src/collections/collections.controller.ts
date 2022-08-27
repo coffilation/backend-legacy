@@ -15,7 +15,7 @@ import { UpdateCollectionDto } from './dto/update-collection.dto'
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { User } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
-import { CollectionPointsDto } from 'collections/dto/collection-points.dto'
+import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
 
 @ApiTags(`collections`)
 @Controller('collections')
@@ -40,20 +40,20 @@ export class CollectionsController {
     return this.collectionsService.findOne(+id)
   }
 
-  @Post(':id/add-points')
-  addPoints(
+  @Post(':id/add-places')
+  addPlaces(
     @Param('id') id: string,
-    @Body() collectionPointsDto: CollectionPointsDto,
+    @Body() collectionPlacesDto: CollectionPlacesDto,
   ) {
-    return this.collectionsService.addPoints(+id, collectionPointsDto)
+    return this.collectionsService.addPlaces(+id, collectionPlacesDto)
   }
 
-  @Post(':id/remove-points')
-  removePoints(
+  @Post(':id/remove-places')
+  removePlaces(
     @Param('id') id: string,
-    @Body() collectionPointsDto: CollectionPointsDto,
+    @Body() collectionPlacesDto: CollectionPlacesDto,
   ) {
-    return this.collectionsService.removePoints(+id, collectionPointsDto)
+    return this.collectionsService.removePlaces(+id, collectionPlacesDto)
   }
 
   @Patch(':id')

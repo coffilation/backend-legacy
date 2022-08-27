@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
-export class CreatePointDto {
+export class CreatePlaceDto {
   @IsNotEmpty()
   @IsString()
   name: string

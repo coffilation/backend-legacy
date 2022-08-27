@@ -7,5 +7,5 @@ export class CreateCollectionDto {
 
   @IsNotEmpty()
   @IsNumber({}, { each: true })
-  points: number[]
+  places: number[]
 }
