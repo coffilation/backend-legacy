@@ -6,15 +6,15 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   HttpCode,
   NotFoundException,
+  Put,
 } from '@nestjs/common'
 import { PlacesService } from './places.service'
 import { CreatePlaceDto } from './dto/create-place.dto'
 import { UpdatePlaceDto } from './dto/update-place.dto'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
+import { ApiTags } from '@nestjs/swagger'
+import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 
 // @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard)
@@ -47,6 +47,17 @@ export class PlacesController {
   @Get(':osmId/collections')
   findPlaceCollections(@Param('osmId') osmId: string) {
     return this.placesService.findPlaceCollections(+osmId)
+  }
+
+  @Put(':osmId/collections')
+  updatePlaceCollections(
+    @Param('osmId') osmId: string,
+    @Body() updatePlaceCollectionsDto: UpdatePlaceCollectionsDto,
+  ) {
+    return this.placesService.updatePlaceCollections(
+      +osmId,
+      updatePlaceCollectionsDto,
+    )
   }
 
   @Patch(':osmId')
