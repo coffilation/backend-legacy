@@ -7,5 +7,4 @@ export = {
   database: process.env.POSTGRES_USER,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-  synchronize: true,
 }
