@@ -31,7 +31,7 @@ jobs:
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
-      - run: yarn ci:lint
+      - run: yarn ci:lint:eslint
 
   Prettier:
     needs: Prepare
@@ -42,7 +42,7 @@ jobs:
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
-      - run: yarn prettier --list-different .
+      - run: yarn ci:lint:prettier
 
   Build:
     needs: Prepare

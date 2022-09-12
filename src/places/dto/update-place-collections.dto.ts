@@ -2,6 +2,6 @@ import { IsNotEmpty, IsNumber } from 'class-validator'
 
 export class UpdatePlaceCollectionsDto {
   @IsNotEmpty()
-  @IsNumber({}, {each: true})
+  @IsNumber({}, { each: true })
   collectionIds: number[]
 }
