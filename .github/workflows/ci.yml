@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: xalvaine/booking-backend:${{ github.ref_name }}
+          tags: xalvaine/coffilation-backend:${{ github.ref_name }}
 
   Deploy:
     if: ${{ github.event_name == 'release' }}
