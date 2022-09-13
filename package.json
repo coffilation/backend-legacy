@@ -6,17 +6,20 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prebuild": "rimraf dist",
     "start": "nest start",
+    "ci:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "ci:lint:prettier": "prettier --list-different \"src/**/*.ts\"",
+    "docker:prod": "docker compose -f production.yml up -d --build",
+    "fix:lint:prettier": "prettier --write \"src/**/*.ts\"",
+    "fix:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "orm:migration:create": "typeorm migration:create ./migrations/manual",
+    "orm:migration:generate": "typeorm migration:generate ./migrations/generated -d ./.config/typeorm-data-source.js",
+    "orm:migration:run": "typeorm migration:run -d ./.config/typeorm-data-source.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "fix:lint:prettier": "prettier --write src",
-    "fix:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "ci:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "ci:lint:prettier": "prettier --list-different ."
+    "start:prod": "node dist/main"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

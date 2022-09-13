@@ -1,4 +1,4 @@
-name: Test
+name: CI
 
 on:
   push:
@@ -90,8 +90,8 @@ jobs:
             export VERSION=$VERSION
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /home/github/booking-backend
+            cd /home/github/coffilation-backend
             git fetch origin main
             git reset --hard origin/main
             docker image prune -a -f --filter "until=24h"
-            yarn ci:docker:prod
+            yarn docker:prod

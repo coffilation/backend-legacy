@@ -18,7 +18,6 @@ import { AuthModule } from 'auth/auth.module'
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true,
     }),
     AuthModule,
     CollectionsModule,
