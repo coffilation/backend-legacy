@@ -33,7 +33,7 @@ services:
     restart: always
     depends_on:
       - migrations
-    image: xalvaine/booking-backend:${VERSION}
+    image: xalvaine/coffilation-backend:${VERSION}
     env_file:
       - .env
     volumes:
