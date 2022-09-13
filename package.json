@@ -11,6 +11,7 @@
     "start": "nest start",
     "ci:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "ci:lint:prettier": "prettier --list-different \"src/**/*.ts\"",
+    "docker:prod": "docker compose -f production.yml up -d --build",
     "fix:lint:prettier": "prettier --write \"src/**/*.ts\"",
     "fix:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "orm:migration:create": "typeorm migration:create ./migrations/manual",

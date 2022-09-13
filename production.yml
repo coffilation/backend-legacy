@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  pg:
+    image: postgres:13-alpine
+    env_file:
+      - .env
+    volumes:
+      - pg:/var/lib/postgresql/data
+    expose:
+      - 5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.pgadmin.rule=Host(`pgadmin.test.api.coffilation.ru`)'
+      - 'traefik.http.routers.pgadmin.entryPoints=webSecure'
+      - 'traefik.http.routers.pgadmin.tls.certResolver=myResolver'
+
+  migrations:
+    depends_on:
+      - pg
+    image: xalvaine/coffilation-backend:${VERSION}
+    command: yarn orm:migration:run
+    working_dir: /home/app
+
+  nest:
+    restart: always
+    depends_on:
+      - migrations
+    image: xalvaine/booking-backend:${VERSION}
+    env_file:
+      - .env
+    volumes:
+      - nest_node_modules:/home/app/node_modules
+    working_dir: /home/app
+    expose:
+      - 8000
+    command: yarn start:prod
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.pgadmin.rule=Host(`test.api.coffilation.ru`)'
+      - 'traefik.http.routers.pgadmin.entryPoints=webSecure'
+      - 'traefik.http.routers.pgadmin.tls.certResolver=myResolver'
+
+  traefik:
+    image: traefik:v2.8
+    container_name: traefik
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedByDefault=false'
+      - '--entryPoints.webSecure.address=:443'
+      - '--certificatesResolvers.myResolver.acme.tlsChallenge=true'
+      - '--certificatesResolvers.myResolver.acme.email=postmaster@example.com'
+      - '--certificatesResolvers.myResolver.acme.storage=/letsencrypt/acme.json'
+    ports:
+      - '443:443'
+    volumes:
+      - letsencrypt:/letsencrypt
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+
+volumes:
+  pg:
+  pgadmin:
+  letsencrypt:
+  nest_node_modules:
