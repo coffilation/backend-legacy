@@ -38,6 +38,8 @@ services:
     image: xalvaine/coffilation-backend:${VERSION}
     env_file:
       - .env
+    environment:
+      VERSION: ${VERSION}
     volumes:
       - nest_node_modules:/home/app/node_modules
     working_dir: /home/app
