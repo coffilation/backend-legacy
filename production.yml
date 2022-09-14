@@ -60,6 +60,7 @@ services:
       - '--certificatesResolvers.myResolver.acme.email=feedback@coffilation.ru'
       - '--certificatesResolvers.myResolver.acme.storage=/letsencrypt/acme.json'
     ports:
+      - '8080:8080'
       - '443:443'
     volumes:
       - letsencrypt:/letsencrypt
