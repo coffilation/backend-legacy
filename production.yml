@@ -26,6 +26,8 @@ services:
     depends_on:
       - pg
     image: xalvaine/coffilation-backend:${VERSION}
+    env_file:
+      - .env
     command: yarn orm:migration:run
     working_dir: /home/app
 
