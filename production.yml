@@ -57,7 +57,7 @@ services:
       - '--providers.docker.exposedByDefault=false'
       - '--entryPoints.webSecure.address=:443'
       - '--certificatesResolvers.myResolver.acme.tlsChallenge=true'
-      - '--certificatesResolvers.myResolver.acme.email=postmaster@example.com'
+      - '--certificatesResolvers.myResolver.acme.email=feedback@coffilation.ru'
       - '--certificatesResolvers.myResolver.acme.storage=/letsencrypt/acme.json'
     ports:
       - '443:443'
