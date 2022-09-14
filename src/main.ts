@@ -16,7 +16,10 @@ async function bootstrap() {
 
   app.enableCors()
 
-  const config = new DocumentBuilder().addBearerAuth().build()
+  const config = new DocumentBuilder()
+    .setVersion(process.env.VERSION)
+    .addBearerAuth()
+    .build()
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
   app.useGlobalFilters(new TypeORMExceptionFilter())
