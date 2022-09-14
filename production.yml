@@ -44,9 +44,9 @@ services:
     command: yarn start:prod
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.pgadmin.rule=Host(`test.api.coffilation.ru`)'
-      - 'traefik.http.routers.pgadmin.entryPoints=webSecure'
-      - 'traefik.http.routers.pgadmin.tls.certResolver=myResolver'
+      - 'traefik.http.routers.nest.rule=Host(`test.api.coffilation.ru`)'
+      - 'traefik.http.routers.nest.entryPoints=webSecure'
+      - 'traefik.http.routers.nest.tls.certResolver=myResolver'
 
   traefik:
     image: traefik:v2.8
