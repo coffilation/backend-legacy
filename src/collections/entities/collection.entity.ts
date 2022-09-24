@@ -12,6 +12,11 @@ import { User } from 'users/entities/user.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 
+export enum CollectionType {
+  Public = `PUBLIC`,
+  Private = `PRIVATE`,
+}
+
 @Entity()
 export class Collection {
   @PrimaryGeneratedColumn()
@@ -34,4 +39,11 @@ export class Collection {
   @ManyToOne(() => User)
   @JoinColumn()
   author: User
+
+  @Column({
+    type: `enum`,
+    enum: CollectionType,
+    default: CollectionType.Private,
+  })
+  type: CollectionType
 }

@@ -16,6 +16,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { User } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
+import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
 
 @ApiTags(`collections`)
 @Controller('collections')
@@ -29,10 +30,12 @@ export class CollectionsController {
     return this.collectionsService.create(createCollectionDto, author)
   }
 
+  @ApiBearerAuth()
+  @UseGuards(UnsafeExtractUserJwtAuthGuard)
   @Get()
   @ApiQuery({ name: `authorId`, type: `number`, required: false })
-  findAll(@Query(`authorId`) authorId) {
-    return this.collectionsService.findAll(authorId)
+  findAll(@Query(`authorId`) authorId, @User() user) {
+    return this.collectionsService.findAll(authorId, user)
   }
 
   @Get(':id')
@@ -62,6 +65,13 @@ export class CollectionsController {
     @Body() updateCollectionDto: UpdateCollectionDto,
   ) {
     return this.collectionsService.update(+id, updateCollectionDto)
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/join')
+  join(@Param('id') id: string, @User() user) {
+    return this.collectionsService.join(+id, user)
   }
 
   @Delete(':id')
