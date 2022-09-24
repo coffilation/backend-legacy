@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { CollectionType } from '../entities/collection.entity'
 
 export class CreateCollectionDto {
   @IsNotEmpty()
@@ -8,4 +9,8 @@ export class CreateCollectionDto {
   @IsNotEmpty()
   @IsNumber({}, { each: true })
   places: number[]
+
+  @IsNotEmpty()
+  @IsEnum(CollectionType)
+  type: CollectionType
 }
