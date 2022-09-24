@@ -43,7 +43,7 @@ export class Collection {
   @Column({
     type: `enum`,
     enum: CollectionType,
-    default: CollectionType.Private
+    default: CollectionType.Private,
   })
   type: CollectionType
 }
