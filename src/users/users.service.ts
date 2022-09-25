@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from 'users/entities/user.entity'
@@ -34,18 +39,37 @@ export class UsersService {
     return this.usersRepository.findOneBy({ username })
   }
 
+  async findOneById(id: User[`id`]) {
+    return this.usersRepository.findOneBy({ id })
+  }
+
   async findMe(user: User) {
     return this.usersRepository.findOneBy(user)
   }
 
   async update(username: string, updateUserDto: UpdateUserDto) {
+    const user = await this.usersRepository.findOneBy({ username })
+
+    if (!user) {
+      throw new NotFoundException()
+    }
+
     return this.usersRepository.findOneBy(
-      await this.usersRepository.save({ ...updateUserDto, username }),
+      await this.usersRepository.save({ id: user.id, ...updateUserDto }),
     )
   }
 
-  async remove(username: string) {
-    await this.usersRepository.delete(username)
+  async remove(username: string, jwtUser: User) {
+    const user = await this.usersRepository.findOneBy({ username })
+
+    if (!user) {
+      throw new NotFoundException()
+    }
+
+    if (jwtUser.id !== user.id) {
+      throw new ForbiddenException()
+    }
+    await this.usersRepository.delete({ username })
   }
 
   hashPassword(password: string) {

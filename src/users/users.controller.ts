@@ -61,7 +61,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete(':username')
-  async remove(@Param('username') username: string) {
-    await this.usersService.remove(username)
+  async remove(@Param('username') username: string, @User() user) {
+    await this.usersService.remove(username, user)
   }
 }
