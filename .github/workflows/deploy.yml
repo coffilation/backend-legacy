@@ -71,6 +71,8 @@ jobs:
           envs: VERSION
           script: |
             export VERSION=$VERSION
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /home/github/coffilation-backend
             git fetch origin main
             git reset --hard origin/main
