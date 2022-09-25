@@ -30,6 +30,8 @@ services:
       - .env
     command: yarn orm:migration:run
     working_dir: /home/app
+    profiles:
+      - migrations
 
   nest:
     restart: always
