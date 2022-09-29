@@ -4,7 +4,7 @@ services:
   pg:
     image: postgres:13-alpine
     env_file:
-      - .env
+      - ../../.env
     volumes:
       - pg:/var/lib/postgresql/data
     expose:
@@ -13,7 +13,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     env_file:
-      - .env
+      - ../../.env
     volumes:
       - pgadmin:/var/lib/pgadmin
     labels:
@@ -27,7 +27,7 @@ services:
       - pg
     image: xalvaine/coffilation-backend:${VERSION}
     env_file:
-      - .env
+      - ../../.env
     command: yarn orm:migration:run
     working_dir: /home/app
     profiles:
@@ -39,7 +39,7 @@ services:
       - migrations
     image: xalvaine/coffilation-backend:${VERSION}
     env_file:
-      - .env
+      - ../../.env
     environment:
       VERSION: ${VERSION}
     volumes:

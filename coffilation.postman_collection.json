@@ -1,0 +1,1141 @@
+{
+	"info": {
+		"_postman_id": "6e655f48-f93d-43f8-ae0d-bc312d10398d",
+		"name": "Coffilation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10561517"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"item": [
+				{
+					"name": "Create user with wrong rePassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"reprehenderit magna dolore adipisicing in\",\n  \"password\": \"officia sit\",\n  \"rePassword\": \"veniam elit fugiat laborum\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create first user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 201",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
+									"    pm.expect(responseJson.username).to.eql(pm.collectionVariables.get(`firstUserUsername`))",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserUsername}}\",\n  \"password\": \"officia sit\",\n  \"rePassword\": \"officia sit\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user with occupied username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserUsername}}\",\n  \"password\": \"officia sit\",\n  \"rePassword\": \"officia sit\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 201",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
+									"    pm.expect(responseJson.username).to.be.a(`string`)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{secondUserUsername}}\",\n  \"password\": \"officia sit\",\n  \"rePassword\": \"officia sit\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Log in and refresh token",
+			"item": [
+				{
+					"name": "First user login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.access).to.be.a(`string`)",
+									"    pm.expect(responseJson.refresh).to.be.a(`string`)",
+									"",
+									"    pm.collectionVariables.set(`firstUserAccessToken`, responseJson.access)",
+									"    pm.collectionVariables.set(`firstUserRefreshToken`, responseJson.refresh)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserUsername}}\",\n  \"password\": \"officia sit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"consectetur sed\",\n  \"password\": \"consequat in velit t\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "//auth/login",
+									"path": [
+										"",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access\": \"ea\",\n  \"refresh\": \"veniam deserunt velit culpa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "First user refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.access).to.be.a(`string`)",
+									"    pm.expect(responseJson.refresh).to.be.a(`string`)",
+									"",
+									"    pm.collectionVariables.set(`firstUserAccessToken`, responseJson.access)",
+									"    pm.collectionVariables.set(`firstUserRefreshToken`, responseJson.refresh)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh\": \"{{firstUserRefreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refresh\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "//auth/refresh",
+									"path": [
+										"",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access\": \"ea\",\n  \"refresh\": \"veniam deserunt velit culpa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Second user login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.access).to.be.a(`string`)",
+									"    pm.expect(responseJson.refresh).to.be.a(`string`)",
+									"",
+									"    pm.collectionVariables.set(`secondUserAccessToken`, responseJson.access)",
+									"    pm.collectionVariables.set(`secondUserRefreshToken`, responseJson.refresh)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{secondUserUsername}}\",\n  \"password\": \"officia sit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"consectetur sed\",\n  \"password\": \"consequat in velit t\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access\": \"ea\",\n  \"refresh\": \"veniam deserunt velit culpa\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User get and patch",
+			"item": [
+				{
+					"name": "Users get me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
+									"    pm.expect(responseJson.username).to.eql(`reprehenderit magna dolore adipisicing in`)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/me",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Users get by username",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "reprehenderit magna dolore adipisicing in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "//users/:username",
+									"path": [
+										"",
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Patch username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
+									"    pm.expect(responseJson.username).to.eql(pm.collectionVariables.get(`firstUserAlternativeUsername`))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserAlternativeUsername}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{firstUserUsername}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"irure in consequat mollit\",\n  \"password\": \"reprehen\",\n  \"rePassword\": \"aliquip proident\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "//users/:username",
+									"path": [
+										"",
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Delete users",
+			"item": [
+				{
+					"name": "Delete second user with wrong token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 403",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{secondUserUsername}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete first user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 204",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{firstUserAlternativeUsername}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 204",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{secondUserUsername}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{firstUserAccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://nest:8000",
+			"type": "string"
+		},
+		{
+			"key": "firstUserAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstUserRefreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstUserUsername",
+			"value": "test first user name",
+			"type": "string"
+		},
+		{
+			"key": "secondUserUsername",
+			"value": "test second user name",
+			"type": "string"
+		},
+		{
+			"key": "secondUserAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "secondUserRefreshToken",
+			"value": ""
+		},
+		{
+			"key": "firstUserAlternativeUsername",
+			"value": "test first user alternative name",
+			"type": "string"
+		}
+	]
+}
