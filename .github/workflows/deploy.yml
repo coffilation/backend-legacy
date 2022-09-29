@@ -77,6 +77,4 @@ jobs:
             cd /home/github/coffilation-backend
             git fetch origin main
             git reset --hard origin/main
-            docker image prune -a -f --filter "until=24h"
-            yarn docker:prod:migrations
-            yarn docker:prod
+            yarn ci:prod
