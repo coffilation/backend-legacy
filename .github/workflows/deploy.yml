@@ -38,7 +38,7 @@ jobs:
           key: node_modules-${{ hashFiles('./yarn.lock') }}
       - run: yarn ci:lint:prettier
 
-  Build:
+  Push:
     needs: [ESLint, Prettier]
     runs-on: ubuntu-latest
     steps:
@@ -62,12 +62,6 @@ jobs:
           push: true
           file: .config/docker/Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
-
-  E2E:
-    runs-on: ubuntu-latest
-    needs: Push
-    steps:
-      - uses: actions/checkout@v2
 
   Deploy:
     needs: E2E
