@@ -56,9 +56,16 @@ jobs:
           push: true
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
 
+  E2E:
+    runs-on: ubuntu-latest
+    needs: Push
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn ci:deploy:e2e
+
   Deploy:
     if: ${{ github.event_name == 'release' }}
-    needs: Push
+    needs: E2E
     runs-on: ubuntu-latest
     steps:
       - uses: appleboy/ssh-action@v0.1.4
