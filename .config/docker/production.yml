@@ -26,6 +26,9 @@ services:
     depends_on:
       - pg
     image: xalvaine/coffilation-backend:${VERSION}
+    build:
+      context: ../..
+      dockerfile: .config/docker/Dockerfile
     env_file:
       - ../../.env
     command: yarn orm:migration:run
@@ -38,6 +41,9 @@ services:
     depends_on:
       - migrations
     image: xalvaine/coffilation-backend:${VERSION}
+    build:
+      context: ../..
+      dockerfile: .config/docker/Dockerfile
     env_file:
       - ../../.env
     environment:
