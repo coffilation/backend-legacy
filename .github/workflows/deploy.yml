@@ -55,6 +55,8 @@ jobs:
           file: .config/docker/Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
       - name: Test image
+        env:
+          VERSION: ${{ github.ref_name }}
         run: yarn deploy:e2e
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
