@@ -64,7 +64,7 @@ jobs:
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
 
   Deploy:
-    needs: E2E
+    needs: Push
     runs-on: ubuntu-latest
     steps:
       - uses: appleboy/ssh-action@v0.1.4
