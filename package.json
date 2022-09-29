@@ -10,7 +10,7 @@
     "prebuild": "rimraf dist",
     "start": "nest start",
     "ci:e2e": "export COMPOSE_FILE=.config/docker/e2e.yml && docker compose up -d && docker compose run --rm migrations && docker compose run --rm newman",
-    "ci:prod": "docker image prune -a -f --filter \"until=24h\" && export COMPOSE_FILE=.config/docker/production.yml && docker compose run migrations && docker compose up -d --build",
+    "ci:prod": "docker image prune -a -f --filter \"until=24h\" && export COMPOSE_FILE=.config/docker/production.yml && docker compose run migrations && docker compose up -d",
     "ci:lint:eslint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "ci:lint:prettier": "prettier --list-different \"src/**/*.ts\"",
     "deploy:e2e": "export COMPOSE_FILE=.config/docker/e2e.deploy.yml && docker compose up -d && docker compose run --rm migrations && docker compose run --rm newman",
