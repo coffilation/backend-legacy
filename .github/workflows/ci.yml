@@ -50,23 +50,10 @@ jobs:
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
-      - uses: actions/cache@v2
-        with:
-          path: dist
-          key: ${{ github.run_id }}-${{ github.run_attempt }}
       - run: yarn build
 
   E2E:
-    needs: Prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: node_modules-${{ hashFiles('./yarn.lock') }}
-      - uses: actions/cache@v2
-        with:
-          path: dist
-          key: ${{ github.run_id }}-${{ github.run_attempt }}
       - run: yarn ci:e2e

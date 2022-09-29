@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "6e655f48-f93d-43f8-ae0d-bc312d10398d",
-		"name": "Coffilation",
+		"name": "coffilation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "10561517"
 	},
@@ -305,9 +305,11 @@
 									}
 								},
 								"url": {
-									"raw": "//auth/login",
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
 									"path": [
-										"",
 										"auth",
 										"login"
 									]
@@ -402,9 +404,11 @@
 									}
 								},
 								"url": {
-									"raw": "//auth/refresh",
+									"raw": "{{baseUrl}}/auth/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
 									"path": [
-										"",
 										"auth",
 										"refresh"
 									]
@@ -544,7 +548,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"    pm.expect(responseJson.id).to.be.a(`number`)",
-									"    pm.expect(responseJson.username).to.eql(`reprehenderit magna dolore adipisicing in`)",
+									"    pm.expect(responseJson.username).to.eql(pm.collectionVariables.get(`firstUserUsername`))",
 									"})",
 									""
 								],
@@ -610,6 +614,28 @@
 				},
 				{
 					"name": "Users get by username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
+									"    pm.expect(responseJson.username).to.eql(pm.collectionVariables.get(`firstUserUsername`))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -630,7 +656,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "reprehenderit magna dolore adipisicing in",
+									"value": "{{firstUserUsername}}",
 									"description": "(Required) "
 								}
 							]
@@ -649,9 +675,11 @@
 									}
 								],
 								"url": {
-									"raw": "//users/:username",
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
 									"path": [
-										"",
 										"users",
 										":username"
 									],
@@ -763,9 +791,11 @@
 									}
 								},
 								"url": {
-									"raw": "//users/:username",
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
 									"path": [
-										"",
 										"users",
 										":username"
 									],
