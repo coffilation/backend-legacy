@@ -6,6 +6,7 @@ import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
 import { Collection } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
+import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class PlacesService {
@@ -25,8 +26,10 @@ export class PlacesService {
     )
   }
 
-  findAll() {
-    return this.placeRepository.find()
+  findAll(user: User) {
+    return this.placeRepository.find({
+      where: { collections: { authorId: user.id } },
+    })
   }
 
   findOne(osmId: number) {
