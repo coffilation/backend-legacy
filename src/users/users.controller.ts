@@ -14,7 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
-import { User } from 'common/decorators/user.decorator'
+import { JwtUserId } from 'common/decorators/user.decorator'
 
 @ApiTags(`users`)
 @Controller('users')
@@ -36,7 +36,7 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  findMe(@User() user) {
+  findMe(@JwtUserId() user) {
     return this.usersService.findMe(user)
   }
 
@@ -61,7 +61,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete(':username')
-  async remove(@Param('username') username: string, @User() user) {
-    await this.usersService.remove(username, user)
+  async remove(
+    @Param('username') username: string,
+    @JwtUserId() userId: number,
+  ) {
+    await this.usersService.remove(username, userId)
   }
 }

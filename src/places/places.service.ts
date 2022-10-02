@@ -6,7 +6,6 @@ import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
 import { Collection } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
-import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class PlacesService {
@@ -26,9 +25,9 @@ export class PlacesService {
     )
   }
 
-  findAll(user: User) {
+  findAll(authorId: number) {
     return this.placeRepository.find({
-      where: { collections: { authorId: user.id } },
+      where: { collections: { authorId } },
     })
   }
 
@@ -66,23 +65,27 @@ export class PlacesService {
       id: In(collectionIds),
     })
 
+    await this.placeRepository.save({ ...place, collections })
+
     return (
       await this.placeRepository.findOne({
-        where: {
-          ...(await this.placeRepository.save({ ...place, collections })),
-        },
+        where: { osmId },
         relations: { collections: true },
       })
     ).collections
   }
 
   async update(osmId: number, updatePlaceDto: UpdatePlaceDto) {
-    return this.placeRepository.findOneBy(
-      await this.placeRepository.save({ ...updatePlaceDto, osmId }),
-    )
+    const place = this.placeRepository.findOneBy({ osmId })
+
+    return this.placeRepository.save({ ...place, ...updatePlaceDto })
   }
 
   async remove(osmId: number) {
     await this.placeRepository.delete({ osmId })
+  }
+
+  findPlaces(osmIds: number[]) {
+    return this.placeRepository.findBy({ osmId: In(osmIds) })
   }
 }

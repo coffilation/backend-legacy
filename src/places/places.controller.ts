@@ -17,7 +17,7 @@ import { UpdatePlaceDto } from './dto/update-place.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
-import { User } from '../common/decorators/user.decorator'
+import { JwtUserId } from '../common/decorators/user.decorator'
 
 // @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard)
@@ -34,8 +34,8 @@ export class PlacesController {
   @Get()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  findAll(@User() user) {
-    return this.placesService.findAll(user)
+  findAll(@JwtUserId() userId: number) {
+    return this.placesService.findAll(userId)
   }
 
   @Get(':osmId')

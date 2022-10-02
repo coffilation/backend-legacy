@@ -13,64 +13,72 @@ import { CollectionsService } from './collections.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { UpdateCollectionDto } from './dto/update-collection.dto'
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
-import { User } from 'common/decorators/user.decorator'
+import { JwtUserId } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
 import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
 
 @ApiTags(`collections`)
 @Controller('collections')
+@UseGuards(UnsafeExtractUserJwtAuthGuard)
+@ApiBearerAuth()
 export class CollectionsController {
   constructor(private readonly collectionsService: CollectionsService) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCollectionDto: CreateCollectionDto, @User() author) {
-    return this.collectionsService.create(createCollectionDto, author)
+  create(
+    @Body() createCollectionDto: CreateCollectionDto,
+    @JwtUserId() authorId: number,
+  ) {
+    return this.collectionsService.create(createCollectionDto, authorId)
   }
 
-  @ApiBearerAuth()
-  @UseGuards(UnsafeExtractUserJwtAuthGuard)
   @Get()
   @ApiQuery({ name: `authorId`, type: `number`, required: false })
-  findAll(@Query(`authorId`) authorId, @User() user) {
-    return this.collectionsService.findAll(authorId, user)
+  findAll(@Query(`authorId`) authorId, @JwtUserId() userId: number) {
+    return this.collectionsService.findAll(authorId, userId)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.collectionsService.findOne(+id)
+  findOne(@Param('id') id: string, @JwtUserId() userId: number) {
+    return this.collectionsService.findOne(+id, userId)
   }
 
   @Post(':id/add-places')
   addPlaces(
     @Param('id') id: string,
     @Body() collectionPlacesDto: CollectionPlacesDto,
+    @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.addPlaces(+id, collectionPlacesDto)
+    return this.collectionsService.addPlaces(+id, collectionPlacesDto, userId)
   }
 
   @Post(':id/remove-places')
   removePlaces(
     @Param('id') id: string,
     @Body() collectionPlacesDto: CollectionPlacesDto,
+    @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.removePlaces(+id, collectionPlacesDto)
+    return this.collectionsService.removePlaces(
+      +id,
+      collectionPlacesDto,
+      userId,
+    )
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateCollectionDto: UpdateCollectionDto,
+    @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.update(+id, updateCollectionDto)
+    return this.collectionsService.update(+id, updateCollectionDto, userId)
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post(':id/join')
-  join(@Param('id') id: string, @User() user) {
+  join(@Param('id') id: string, @JwtUserId() user) {
     return this.collectionsService.join(+id, user)
   }
 

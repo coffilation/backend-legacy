@@ -59,14 +59,14 @@ export class UsersService {
     )
   }
 
-  async remove(username: string, jwtUser: User) {
+  async remove(username: string, jwtUserId: number) {
     const user = await this.usersRepository.findOneBy({ username })
 
     if (!user) {
       throw new NotFoundException()
     }
 
-    if (jwtUser.id !== user.id) {
+    if (jwtUserId !== user.id) {
       throw new ForbiddenException()
     }
     await this.usersRepository.delete({ username })

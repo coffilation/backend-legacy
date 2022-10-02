@@ -5,12 +5,12 @@ import {
   Collection,
   CollectionType,
 } from 'collections/entities/collection.entity'
-import { FindOptionsWhere, In, Not, Repository } from 'typeorm'
+import { FindOptionsWhere, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 import { User } from 'users/entities/user.entity'
 import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
-import { Place } from 'places/entities/place.entity'
 import { UserCollection, UserRole } from './entities/user-collection.entity'
+import { PlacesService } from '../places/places.service'
 
 @Injectable()
 export class CollectionsService {
@@ -18,46 +18,40 @@ export class CollectionsService {
     @InjectRepository(Collection)
     private collectionsRepository: Repository<Collection>,
 
-    @InjectRepository(Place)
-    private placesRepository: Repository<Place>,
-
     @InjectRepository(UserCollection)
     private userCollectionRepository: Repository<UserCollection>,
+
+    private readonly placesService: PlacesService,
   ) {}
 
   async create(
     { places, ...createCollectionDto }: CreateCollectionDto,
-    user: User,
+    userId: number,
   ) {
-    const placeEntities = await this.placesRepository.findBy({
-      id: In(places),
-    })
+    const placeEntities = await this.placesService.findPlaces(places)
 
     const collection = await this.collectionsRepository.save({
       ...createCollectionDto,
       places: placeEntities,
-      authorId: user.id,
+      authorId: userId,
     })
 
     await this.userCollectionRepository.save({
       collection,
-      user,
+      userId,
       role: UserRole.Owner,
     })
 
-    return this.collectionsRepository.findOne({
-      where: {},
-      relations: { places: true, author: true },
-    })
+    return collection
   }
 
-  findAll(authorId: number | undefined, user: User | undefined) {
+  findAll(authorId: number | undefined, userId: number | undefined) {
     const findOptionsWhere: FindOptionsWhere<Collection>[] = [
       { authorId, type: CollectionType.Public },
     ]
 
-    if (user) {
-      findOptionsWhere.push({ authorId: user.id })
+    if (userId) {
+      findOptionsWhere.push({ authorId: userId })
     }
 
     return this.collectionsRepository.find({
@@ -66,67 +60,60 @@ export class CollectionsService {
     })
   }
 
-  findOne(id: number) {
-    return this.collectionsRepository.findOne({
-      where: { id },
-      relations: { places: true },
-    })
-  }
-
-  async getCollection(collectionId: number) {
+  async findOne(id: number, authorId: number) {
     const collection = await this.collectionsRepository.findOne({
-      where: {
-        id: collectionId,
-      },
+      where: [
+        { id, authorId },
+        { id, type: CollectionType.Public },
+      ],
       relations: { places: true, author: true },
     })
 
     if (!collection) {
-      throw new NotFoundException(
-        `Collection with id ${collectionId} not found`,
-      )
+      throw new NotFoundException()
     }
 
     return collection
   }
 
-  async addPlaces(collectionId: number, { placeIds }: CollectionPlacesDto) {
-    const collection = await this.getCollection(collectionId)
+  async addPlaces(
+    collectionId: number,
+    { placeIds }: CollectionPlacesDto,
+    userId: number,
+  ) {
+    const collection = await this.findOne(collectionId, userId)
 
-    const places = await this.placesRepository.findBy({ id: In(placeIds) })
+    const places = await this.placesService.findPlaces(placeIds)
 
-    return this.collectionsRepository.findOne({
-      where: await this.collectionsRepository.save({
-        ...collection,
-        places: [...collection.places, ...places],
-      }),
-      relations: { places: true, author: true },
-    })
+    collection.places.push(...places)
+
+    return this.collectionsRepository.save(collection)
   }
 
-  async removePlaces(collectionId: number, { placeIds }: CollectionPlacesDto) {
-    const collection = await this.getCollection(collectionId)
+  async removePlaces(
+    collectionId: number,
+    { placeIds }: CollectionPlacesDto,
+    userId: number,
+  ) {
+    const collection = await this.findOne(collectionId, userId)
 
-    const places = await this.placesRepository.findBy({ id: Not(In(placeIds)) })
+    collection.places = collection.places.filter(
+      ({ osmId }) => !placeIds.includes(osmId),
+    )
 
-    return this.collectionsRepository.findOne({
-      where: await this.collectionsRepository.save({
-        ...collection,
-        places: places,
-      }),
-      relations: { places: true, author: true },
-    })
+    return this.collectionsRepository.save(collection)
   }
 
-  async update(id: number, updateCollectionDto: UpdateCollectionDto) {
-    await this.collectionsRepository.save({
+  async update(
+    id: number,
+    updateCollectionDto: UpdateCollectionDto,
+    userId: number,
+  ) {
+    const collection = await this.findOne(id, userId)
+
+    return this.collectionsRepository.save({
+      ...collection,
       ...updateCollectionDto,
-      id,
-    })
-
-    return this.collectionsRepository.findOne({
-      where: { id },
-      relations: { places: true },
     })
   }
 
@@ -140,8 +127,6 @@ export class CollectionsService {
     }
 
     await this.userCollectionRepository.save({ user, collection })
-
-    return
   }
 
   async remove(id: number) {
