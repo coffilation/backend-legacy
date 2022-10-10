@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   async validateJWT({ id }: User) {
-    return this.serializeUserFields(await this.usersService.findOneById(id))
+    return this.serializeUserFields(await this.usersService.findOne(id))
   }
 
   serializeUserFields(user: User) {

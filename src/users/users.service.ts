@@ -10,6 +10,7 @@ import { User } from 'users/entities/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { compareSync, hash } from 'bcrypt'
+import { GetUserIdDto } from './dto/get-user-id.dto'
 
 @Injectable()
 export class UsersService {
@@ -35,42 +36,40 @@ export class UsersService {
     return this.usersRepository.find()
   }
 
-  async findOne(username: User[`username`]) {
-    return this.usersRepository.findOneBy({ username })
+  async findOne(id: User[`id`]) {
+    const user = await this.usersRepository.findOneBy({ id })
+
+    if (!user) {
+      throw new NotFoundException()
+    }
+
+    return user
   }
 
-  async findOneById(id: User[`id`]) {
-    return this.usersRepository.findOneBy({ id })
-  }
-
-  async findMe(userId: number) {
-    return this.usersRepository.findOneBy({ id: userId })
-  }
-
-  async update(username: string, updateUserDto: UpdateUserDto) {
+  async findOneByUsername(username: User[`username`]) {
     const user = await this.usersRepository.findOneBy({ username })
 
     if (!user) {
       throw new NotFoundException()
     }
 
-    return this.usersRepository.findOneBy(
-      await this.usersRepository.save({ id: user.id, ...updateUserDto }),
-    )
+    return { id: user.id } as GetUserIdDto
   }
 
-  async remove(username: string, jwtUserId: number) {
-    const user = await this.usersRepository.findOneBy({ username })
+  async update(id: User[`id`], updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id)
 
-    if (!user) {
-      throw new NotFoundException()
-    }
+    return this.usersRepository.save({ ...user, ...updateUserDto })
+  }
+
+  async remove(id: User[`id`], jwtUserId: number) {
+    const user = await this.findOne(id)
 
     if (jwtUserId !== user.id) {
       throw new ForbiddenException()
     }
 
-    await this.usersRepository.delete({ username })
+    await this.usersRepository.delete({ id })
   }
 
   hashPassword(password: string) {

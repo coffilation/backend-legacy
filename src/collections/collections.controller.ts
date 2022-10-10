@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
   HttpCode,
+  ParseIntPipe,
 } from '@nestjs/common'
 import { CollectionsService } from './collections.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
@@ -43,41 +44,37 @@ export class CollectionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @JwtUserId() userId: number) {
-    return this.collectionsService.findOne(+id, userId)
+  findOne(@Param('id', ParseIntPipe) id: number, @JwtUserId() userId: number) {
+    return this.collectionsService.findOne(id, userId)
   }
 
   @HttpCode(200)
   @Post(':id/add-places')
   addPlaces(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() collectionPlacesDto: CollectionPlacesDto,
     @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.addPlaces(+id, collectionPlacesDto, userId)
+    return this.collectionsService.addPlaces(id, collectionPlacesDto, userId)
   }
 
   @HttpCode(200)
   @Post(':id/remove-places')
   removePlaces(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() collectionPlacesDto: CollectionPlacesDto,
     @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.removePlaces(
-      +id,
-      collectionPlacesDto,
-      userId,
-    )
+    return this.collectionsService.removePlaces(id, collectionPlacesDto, userId)
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCollectionDto: UpdateCollectionDto,
     @JwtUserId() userId: number,
   ) {
-    return this.collectionsService.update(+id, updateCollectionDto, userId)
+    return this.collectionsService.update(id, updateCollectionDto, userId)
   }
 
   // @Post(':id/join')
@@ -87,7 +84,7 @@ export class CollectionsController {
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.collectionsService.remove(+id)
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.collectionsService.remove(id)
   }
 }

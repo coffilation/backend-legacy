@@ -61,6 +61,57 @@
 					"response": []
 				},
 				{
+					"name": "Create user with wrong username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"reprehenderit magna dolore adipisicing in\",\n  \"password\": \"officia sit\",\n  \"rePassword\": \"officia sit\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create first user",
 					"event": [
 						{
@@ -77,6 +128,8 @@
 									"    const responseJson = pm.response.json()",
 									"    pm.expect(responseJson.id).to.be.a(`number`)",
 									"    pm.expect(responseJson.username).to.eql(pm.collectionVariables.get(`firstUserUsername`))",
+									"",
+									"    pm.collectionVariables.set(`firstUserId`, responseJson.id)",
 									"});",
 									""
 								],
@@ -185,6 +238,8 @@
 									"    const responseJson = pm.response.json()",
 									"    pm.expect(responseJson.id).to.be.a(`number`)",
 									"    pm.expect(responseJson.username).to.be.a(`string`)",
+									"",
+									"    pm.collectionVariables.set(`secondUserId`, responseJson.id)",
 									"});",
 									""
 								],
@@ -291,7 +346,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -390,7 +445,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -489,7 +544,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -577,7 +632,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -613,7 +668,103 @@
 					]
 				},
 				{
-					"name": "Users get by username",
+					"name": "Users get id by username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"    pm.expect(responseJson.id).to.eql(parseInt(pm.collectionVariables.get(`firstUserId`)))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:username/id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":username",
+								"id"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{firstUserUsername}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Users get by id",
 					"event": [
 						{
 							"listen": "test",
@@ -645,26 +796,25 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:username",
+							"raw": "{{baseUrl}}/users/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":username"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "username",
-									"value": "{{firstUserUsername}}",
-									"description": "(Required) "
+									"key": "id",
+									"value": "{{firstUserId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -752,26 +902,25 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:username",
+							"raw": "{{baseUrl}}/users/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":username"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "username",
-									"value": "{{firstUserUsername}}",
-									"description": "(Required) "
+									"key": "id",
+									"value": "{{firstUserId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -887,7 +1036,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -979,7 +1128,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1060,7 +1209,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1168,7 +1317,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1263,7 +1412,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1361,7 +1510,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1451,7 +1600,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1547,7 +1696,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1654,7 +1803,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -1767,7 +1916,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1871,7 +2020,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1971,7 +2120,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2079,7 +2228,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2183,7 +2332,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2274,7 +2423,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2364,7 +2513,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2466,7 +2615,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -2564,7 +2713,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2647,7 +2796,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2671,6 +2820,88 @@
 							},
 							"status": "No Content",
 							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Delete collections",
+			"item": [
+				{
+					"name": "Delete collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 204",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/collections/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/collections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -2721,7 +2952,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "{{secondUserUsername}}",
+									"value": "{{secondUserId}}",
 									"description": "(Required) "
 								}
 							]
@@ -2729,7 +2960,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -2814,7 +3045,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "{{firstUserAlternativeUsername}}",
+									"value": "{{firstUserId}}",
 									"description": "(Required) "
 								}
 							]
@@ -2822,7 +3053,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -2907,7 +3138,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "{{secondUserUsername}}",
+									"value": "{{secondUserId}}",
 									"description": "(Required) "
 								}
 							]
@@ -2915,7 +3146,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -2945,88 +3176,6 @@
 							},
 							"status": "No Content",
 							"code": 204,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Delete collections",
-			"item": [
-				{
-					"name": "Delete collection",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const statusCode = 204",
-									"",
-									"pm.test(`Status code is ${statusCode}`, () => {",
-									"  pm.expect(pm.response.code).to.eql(statusCode)",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/collections/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"collections",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Untitled Example",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/collections/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"collections",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "ea ut est consequat velit",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -3090,12 +3239,12 @@
 		},
 		{
 			"key": "firstUserUsername",
-			"value": "test first user name",
+			"value": "testfirstusername",
 			"type": "string"
 		},
 		{
 			"key": "secondUserUsername",
-			"value": "test second user name",
+			"value": "testsecondusername",
 			"type": "string"
 		},
 		{
@@ -3117,12 +3266,22 @@
 		},
 		{
 			"key": "firstUserAlternativeUsername",
-			"value": "test first user alternative name",
+			"value": "testfirstuseralternativename",
 			"type": "string"
 		},
 		{
 			"key": "firstUserCollectionId",
-			"value": "",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "firstUserId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "secondUserId",
+			"value": "0",
 			"type": "string"
 		}
 	]
