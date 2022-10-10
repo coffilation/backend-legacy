@@ -7,8 +7,9 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards, HttpCode
-} from "@nestjs/common";
+  UseGuards,
+  HttpCode,
+} from '@nestjs/common'
 import { CollectionsService } from './collections.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { UpdateCollectionDto } from './dto/update-collection.dto'
