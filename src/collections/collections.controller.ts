@@ -7,8 +7,8 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
-} from '@nestjs/common'
+  UseGuards, HttpCode
+} from "@nestjs/common";
 import { CollectionsService } from './collections.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { UpdateCollectionDto } from './dto/update-collection.dto'
@@ -46,6 +46,7 @@ export class CollectionsController {
     return this.collectionsService.findOne(+id, userId)
   }
 
+  @HttpCode(200)
   @Post(':id/add-places')
   addPlaces(
     @Param('id') id: string,
@@ -55,6 +56,7 @@ export class CollectionsController {
     return this.collectionsService.addPlaces(+id, collectionPlacesDto, userId)
   }
 
+  @HttpCode(200)
   @Post(':id/remove-places')
   removePlaces(
     @Param('id') id: string,
@@ -77,11 +79,12 @@ export class CollectionsController {
     return this.collectionsService.update(+id, updateCollectionDto, userId)
   }
 
-  @Post(':id/join')
-  join(@Param('id') id: string, @JwtUserId() user) {
-    return this.collectionsService.join(+id, user)
-  }
+  // @Post(':id/join')
+  // join(@Param('id') id: string, @JwtUserId() user) {
+  //   return this.collectionsService.join(+id, user)
+  // }
 
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.collectionsService.remove(+id)

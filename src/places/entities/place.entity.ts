@@ -21,7 +21,7 @@ export class Place {
   @Column({ type: `float` })
   longitude: number
 
-  @Transform(({ value }) => +value)
   @PrimaryColumn({ type: `bigint` })
+  @Transform(({ value }) => +value)
   osmId: number
 }

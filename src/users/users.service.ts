@@ -43,8 +43,8 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id })
   }
 
-  async findMe(user: User) {
-    return this.usersRepository.findOneBy(user)
+  async findMe(userId: number) {
+    return this.usersRepository.findOneBy({ id: userId })
   }
 
   async update(username: string, updateUserDto: UpdateUserDto) {
@@ -69,6 +69,7 @@ export class UsersService {
     if (jwtUserId !== user.id) {
       throw new ForbiddenException()
     }
+
     await this.usersRepository.delete({ username })
   }
 

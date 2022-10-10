@@ -36,8 +36,8 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  findMe(@JwtUserId() user) {
-    return this.usersService.findMe(user)
+  findMe(@JwtUserId() userId: number) {
+    return this.usersService.findMe(userId)
   }
 
   @ApiBearerAuth()

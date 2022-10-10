@@ -24,11 +24,11 @@ export class UserCollection {
   @PrimaryColumn()
   collectionId: number
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: `CASCADE` })
   @JoinColumn()
   user: User
 
-  @ManyToOne(() => Collection)
+  @ManyToOne(() => Collection, { onDelete: `CASCADE` })
   @JoinTable()
   collection: Collection
 

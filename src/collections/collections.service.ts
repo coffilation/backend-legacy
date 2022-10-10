@@ -42,7 +42,7 @@ export class CollectionsService {
       role: UserRole.Owner,
     })
 
-    return collection
+    return collection as Collection
   }
 
   findAll(authorId: number | undefined, userId: number | undefined) {
@@ -98,7 +98,7 @@ export class CollectionsService {
     const collection = await this.findOne(collectionId, userId)
 
     collection.places = collection.places.filter(
-      ({ osmId }) => !placeIds.includes(osmId),
+      ({ osmId }) => !placeIds.includes(parseInt(osmId as unknown as string)),
     )
 
     return this.collectionsRepository.save(collection)

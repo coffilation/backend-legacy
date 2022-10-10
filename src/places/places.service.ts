@@ -4,7 +4,10 @@ import { UpdatePlaceDto } from './dto/update-place.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
-import { Collection } from 'collections/entities/collection.entity'
+import {
+  Collection,
+  FlatCollection,
+} from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 
 @Injectable()
@@ -38,7 +41,7 @@ export class PlacesService {
   async findPlaceCollections(osmId: number) {
     const place = await this.placeRepository.findOne({
       where: { osmId },
-      relations: { collections: true },
+      relations: { collections: { places: true } },
     })
 
     if (!place) {
@@ -54,7 +57,7 @@ export class PlacesService {
   ) {
     const place = await this.placeRepository.findOne({
       where: { osmId },
-      relations: { collections: true },
+      relations: { collections: { places: true } },
     })
 
     if (!place) {
@@ -72,13 +75,20 @@ export class PlacesService {
         where: { osmId },
         relations: { collections: true },
       })
-    ).collections
+    ).collections as FlatCollection[]
   }
 
   async update(osmId: number, updatePlaceDto: UpdatePlaceDto) {
-    const place = this.placeRepository.findOneBy({ osmId })
+    const place = await this.placeRepository.findOneBy({ osmId })
 
-    return this.placeRepository.save({ ...place, ...updatePlaceDto })
+    const updatedPlace = (await this.placeRepository.save({
+      ...place,
+      ...updatePlaceDto,
+    })) as Place
+
+    updatedPlace.osmId = osmId
+
+    return updatedPlace
   }
 
   async remove(osmId: number) {
