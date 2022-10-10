@@ -1,13 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm'
 import { Collection } from 'collections/entities/collection.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude, Transform } from 'class-transformer'
 
 @Entity()
 export class Place {
-  @PrimaryGeneratedColumn()
-  id: number
-
   @Column()
   name: string
 
@@ -24,7 +21,7 @@ export class Place {
   @Column({ type: `float` })
   longitude: number
 
+  @PrimaryColumn({ type: `bigint` })
   @Transform(({ value }) => +value)
-  @Column({ unique: true, type: `bigint` })
   osmId: number
 }

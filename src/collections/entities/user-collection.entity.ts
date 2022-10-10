@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm'
 import { User } from 'users/entities/user.entity'
 import { Collection } from './collection.entity'
 
@@ -17,11 +24,12 @@ export class UserCollection {
   @PrimaryColumn()
   collectionId: number
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: `userId` })
+  @ManyToOne(() => User, { onDelete: `CASCADE` })
+  @JoinColumn()
   user: User
 
-  @ManyToOne(() => Collection)
+  @ManyToOne(() => Collection, { onDelete: `CASCADE` })
+  @JoinTable()
   collection: Collection
 
   @Column({

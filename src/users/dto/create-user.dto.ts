@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString, Matches } from 'class-validator'
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
+  @Matches(/^[^0-9]\w+$/)
   username: string
 
   @IsNotEmpty()

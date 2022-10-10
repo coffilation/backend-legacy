@@ -9,5 +9,6 @@ import { Collection } from 'collections/entities/collection.entity'
   imports: [TypeOrmModule.forFeature([Place, Collection])],
   controllers: [PlacesController],
   providers: [PlacesService],
+  exports: [PlacesService],
 })
 export class PlacesModule {}

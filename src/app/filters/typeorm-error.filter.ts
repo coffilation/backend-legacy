@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { QueryFailedError, EntityNotFoundError, TypeORMError } from 'typeorm'
 
 @Catch(QueryFailedError, EntityNotFoundError)
-export class TypeORMExceptionFilter implements ExceptionFilter {
+export class TypeormErrorFilter implements ExceptionFilter {
   catch(exception: TypeORMError, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const request = ctx.getRequest<FastifyRequest>()

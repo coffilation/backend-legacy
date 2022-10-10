@@ -5,7 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { TypeORMExceptionFilter } from 'app/typeorm-exception.filter'
+import { TypeormErrorFilter } from 'app/filters/typeorm-error.filter'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
@@ -22,7 +22,7 @@ async function bootstrap() {
     .build()
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
-  app.useGlobalFilters(new TypeORMExceptionFilter())
+  app.useGlobalFilters(new TypeormErrorFilter())
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
   const document = SwaggerModule.createDocument(app, config)

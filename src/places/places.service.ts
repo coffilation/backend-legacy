@@ -6,7 +6,6 @@ import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
 import { Collection } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
-import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class PlacesService {
@@ -26,20 +25,26 @@ export class PlacesService {
     )
   }
 
-  findAll(user: User) {
+  findAll(authorId: number) {
     return this.placeRepository.find({
-      where: { collections: { authorId: user.id } },
+      where: { collections: { authorId } },
     })
   }
 
-  findOne(osmId: number) {
-    return this.placeRepository.findOneBy({ osmId })
+  async findOne(osmId: number) {
+    const place = await this.placeRepository.findOneBy({ osmId })
+
+    if (!place) {
+      throw new NotFoundException()
+    }
+
+    return place
   }
 
   async findPlaceCollections(osmId: number) {
     const place = await this.placeRepository.findOne({
       where: { osmId },
-      relations: { collections: true },
+      relations: { collections: { places: true } },
     })
 
     if (!place) {
@@ -53,36 +58,35 @@ export class PlacesService {
     osmId: number,
     { collectionIds }: UpdatePlaceCollectionsDto,
   ) {
-    const place = await this.placeRepository.findOne({
-      where: { osmId },
-      relations: { collections: true },
-    })
-
-    if (!place) {
-      throw new NotFoundException()
-    }
+    const place = await this.findOne(osmId)
 
     const collections = await this.collectionsRepository.findBy({
       id: In(collectionIds),
     })
 
-    return (
-      await this.placeRepository.findOne({
-        where: {
-          ...(await this.placeRepository.save({ ...place, collections })),
-        },
-        relations: { collections: true },
-      })
-    ).collections
+    await this.placeRepository.save({ ...place, collections })
+
+    return collections
   }
 
-  async update(osmId: number, updatePlaceDto: UpdatePlaceDto) {
-    return this.placeRepository.findOneBy(
-      await this.placeRepository.save({ ...updatePlaceDto, osmId }),
-    )
+  async update(osmId: number, updatePlaceDto: UpdatePlaceDto): Promise<Place> {
+    const place = await this.placeRepository.findOneBy({ osmId })
+
+    const updatedPlace = await this.placeRepository.save({
+      ...place,
+      ...updatePlaceDto,
+    })
+
+    updatedPlace.osmId = osmId
+
+    return updatedPlace
   }
 
   async remove(osmId: number) {
     await this.placeRepository.delete({ osmId })
+  }
+
+  findPlaces(osmIds: number[]) {
+    return this.placeRepository.findBy({ osmId: In(osmIds) })
   }
 }

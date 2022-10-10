@@ -36,7 +36,7 @@ export class Collection {
   @Column()
   authorId: number
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: `CASCADE` })
   @JoinColumn()
   author: User
 
@@ -47,3 +47,5 @@ export class Collection {
   })
   type: CollectionType
 }
+
+export type FlatCollection = Omit<Collection, `places`>
