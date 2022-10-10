@@ -56,10 +56,13 @@ export class UsersService {
     return { id: user.id } as GetUserIdDto
   }
 
-  async update(id: User[`id`], updateUserDto: UpdateUserDto) {
+  async update(id: User[`id`], updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id)
 
-    return this.usersRepository.save({ ...user, ...updateUserDto })
+    return this.usersRepository.save({
+      ...user,
+      ...updateUserDto,
+    })
   }
 
   async remove(id: User[`id`], jwtUserId: number) {

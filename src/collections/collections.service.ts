@@ -7,7 +7,6 @@ import {
 } from 'collections/entities/collection.entity'
 import { FindOptionsWhere, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
-import { User } from 'users/entities/user.entity'
 import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
 import { UserCollection, UserRole } from './entities/user-collection.entity'
 import { PlacesService } from '../places/places.service'
@@ -27,7 +26,7 @@ export class CollectionsService {
   async create(
     { places, ...createCollectionDto }: CreateCollectionDto,
     userId: number,
-  ) {
+  ): Promise<Collection> {
     const placeEntities = await this.placesService.findPlaces(places)
 
     const collection = await this.collectionsRepository.save({
@@ -42,7 +41,7 @@ export class CollectionsService {
       role: UserRole.Owner,
     })
 
-    return collection as Collection
+    return collection
   }
 
   findAll(authorId: number | undefined, userId: number | undefined) {
@@ -108,7 +107,7 @@ export class CollectionsService {
     id: number,
     updateCollectionDto: UpdateCollectionDto,
     userId: number,
-  ) {
+  ): Promise<Collection> {
     const collection = await this.findOne(id, userId)
 
     return this.collectionsRepository.save({
@@ -117,17 +116,17 @@ export class CollectionsService {
     })
   }
 
-  async join(id: number, user: User) {
-    const collection = await this.collectionsRepository.findOne({
-      where: { id, type: CollectionType.Public },
-    })
-
-    if (!collection) {
-      throw new NotFoundException()
-    }
-
-    await this.userCollectionRepository.save({ user, collection })
-  }
+  // async join(id: number, user: User) {
+  //   const collection = await this.collectionsRepository.findOne({
+  //     where: { id, type: CollectionType.Public },
+  //   })
+  //
+  //   if (!collection) {
+  //     throw new NotFoundException()
+  //   }
+  //
+  //   await this.userCollectionRepository.save({ user, collection })
+  // }
 
   async remove(id: number) {
     await this.collectionsRepository.delete(id)

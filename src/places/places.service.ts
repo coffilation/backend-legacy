@@ -4,10 +4,7 @@ import { UpdatePlaceDto } from './dto/update-place.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
-import {
-  Collection,
-  FlatCollection,
-} from 'collections/entities/collection.entity'
+import { Collection } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 
 @Injectable()
@@ -34,8 +31,14 @@ export class PlacesService {
     })
   }
 
-  findOne(osmId: number) {
-    return this.placeRepository.findOneBy({ osmId })
+  async findOne(osmId: number) {
+    const place = await this.placeRepository.findOneBy({ osmId })
+
+    if (!place) {
+      throw new NotFoundException()
+    }
+
+    return place
   }
 
   async findPlaceCollections(osmId: number) {
@@ -55,14 +58,7 @@ export class PlacesService {
     osmId: number,
     { collectionIds }: UpdatePlaceCollectionsDto,
   ) {
-    const place = await this.placeRepository.findOne({
-      where: { osmId },
-      relations: { collections: { places: true } },
-    })
-
-    if (!place) {
-      throw new NotFoundException()
-    }
+    const place = await this.findOne(osmId)
 
     const collections = await this.collectionsRepository.findBy({
       id: In(collectionIds),
@@ -70,21 +66,16 @@ export class PlacesService {
 
     await this.placeRepository.save({ ...place, collections })
 
-    return (
-      await this.placeRepository.findOne({
-        where: { osmId },
-        relations: { collections: true },
-      })
-    ).collections as FlatCollection[]
+    return collections
   }
 
-  async update(osmId: number, updatePlaceDto: UpdatePlaceDto) {
+  async update(osmId: number, updatePlaceDto: UpdatePlaceDto): Promise<Place> {
     const place = await this.placeRepository.findOneBy({ osmId })
 
-    const updatedPlace = (await this.placeRepository.save({
+    const updatedPlace = await this.placeRepository.save({
       ...place,
       ...updatePlaceDto,
-    })) as Place
+    })
 
     updatedPlace.osmId = osmId
 
