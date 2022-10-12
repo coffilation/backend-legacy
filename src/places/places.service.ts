@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { CreatePlaceDto } from './dto/create-place.dto'
-import { UpdatePlaceDto } from './dto/update-place.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
@@ -69,18 +68,18 @@ export class PlacesService {
     return collections
   }
 
-  async update(osmId: number, updatePlaceDto: UpdatePlaceDto): Promise<Place> {
-    const place = await this.placeRepository.findOneBy({ osmId })
-
-    const updatedPlace = await this.placeRepository.save({
-      ...place,
-      ...updatePlaceDto,
-    })
-
-    updatedPlace.osmId = osmId
-
-    return updatedPlace
-  }
+  // async update(osmId: number, updatePlaceDto: UpdatePlaceDto): Promise<Place> {
+  //   const place = await this.placeRepository.findOneBy({ osmId })
+  //
+  //   const updatedPlace = await this.placeRepository.save({
+  //     ...place,
+  //     ...updatePlaceDto,
+  //   })
+  //
+  //   updatedPlace.osmId = osmId
+  //
+  //   return updatedPlace
+  // }
 
   async remove(osmId: number) {
     await this.placeRepository.delete({ osmId })

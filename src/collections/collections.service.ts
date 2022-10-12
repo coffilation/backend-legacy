@@ -98,7 +98,7 @@ export class CollectionsService {
     const collection = await this.findOne(collectionId, userId)
 
     collection.places = collection.places.filter(
-      ({ osmId }) => !placeIds.includes(parseInt(osmId as unknown as string)),
+      ({ osmId }) => !placeIds.includes(osmId),
     )
 
     return (await this.collectionsRepository.save(collection)).places
