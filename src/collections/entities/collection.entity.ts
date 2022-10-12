@@ -25,6 +25,8 @@ export class Collection {
   @Column()
   name: string
 
+  @ApiHideProperty()
+  @Exclude()
   @ManyToMany(() => Place, (place) => place.collections, {
     onDelete: `CASCADE`,
   })

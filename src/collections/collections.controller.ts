@@ -48,6 +48,14 @@ export class CollectionsController {
     return this.collectionsService.findOne(id, userId)
   }
 
+  @Get(':id/places')
+  findAllPlaces(
+    @Param('id', ParseIntPipe) id: number,
+    @JwtUserId() userId: number,
+  ) {
+    return this.collectionsService.findAllPlaces(id, userId)
+  }
+
   @HttpCode(200)
   @Post(':id/add-places')
   addPlaces(

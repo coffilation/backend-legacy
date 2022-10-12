@@ -24,14 +24,11 @@ export class CollectionsService {
   ) {}
 
   async create(
-    { places, ...createCollectionDto }: CreateCollectionDto,
+    { ...createCollectionDto }: CreateCollectionDto,
     userId: number,
   ): Promise<Collection> {
-    const placeEntities = await this.placesService.findPlaces(places)
-
     const collection = await this.collectionsRepository.save({
       ...createCollectionDto,
-      places: placeEntities,
       authorId: userId,
     })
 
@@ -59,10 +56,10 @@ export class CollectionsService {
     })
   }
 
-  async findOne(id: number, authorId: number) {
+  async findOne(id: number, userId: number) {
     const collection = await this.collectionsRepository.findOne({
       where: [
-        { id, authorId },
+        { id, authorId: userId },
         { id, type: CollectionType.Public },
       ],
       relations: { places: true, author: true },
@@ -73,6 +70,10 @@ export class CollectionsService {
     }
 
     return collection
+  }
+
+  async findAllPlaces(id: number, userId: number) {
+    return (await this.findOne(id, userId)).places
   }
 
   async addPlaces(
@@ -86,7 +87,7 @@ export class CollectionsService {
 
     collection.places.push(...places)
 
-    return this.collectionsRepository.save(collection)
+    return (await this.collectionsRepository.save(collection)).places
   }
 
   async removePlaces(
@@ -100,7 +101,7 @@ export class CollectionsService {
       ({ osmId }) => !placeIds.includes(parseInt(osmId as unknown as string)),
     )
 
-    return this.collectionsRepository.save(collection)
+    return (await this.collectionsRepository.save(collection)).places
   }
 
   async update(

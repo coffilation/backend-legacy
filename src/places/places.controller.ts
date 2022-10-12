@@ -7,7 +7,6 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
   UseGuards,
 } from '@nestjs/common'
 import { PlacesService } from './places.service'
@@ -53,7 +52,8 @@ export class PlacesController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Put(':osmId/collections')
+  @HttpCode(200)
+  @Post(':osmId/set-collections')
   updatePlaceCollections(
     @Param('osmId', ParseIntPipe) osmId: number,
     @Body() updatePlaceCollectionsDto: UpdatePlaceCollectionsDto,

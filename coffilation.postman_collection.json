@@ -1258,13 +1258,8 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
 									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"",
 									"    pm.collectionVariables.set(`firstUserCollectionId`, responseJson.id)",
 									"})",
@@ -1379,12 +1374,6 @@
 									"",
 									"    const collection = responseJson[0]",
 									"    pm.expect(collection.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = collection.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1469,12 +1458,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1749,12 +1732,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1865,12 +1842,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1968,9 +1939,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    pm.expect(responseJson.places.length).to.eql(0)",
+									"    pm.expect(responseJson.length).to.eql(0)",
 									"})",
 									""
 								],
@@ -2082,9 +2051,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    pm.expect(responseJson.places.length).to.eql(0)",
+									"    pm.expect(responseJson.length).to.eql(0)",
 									"})",
 									""
 								],
@@ -2101,13 +2068,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
-								":id"
+								":id",
+								"places"
 							],
 							"variable": [
 								{
@@ -2172,9 +2140,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
+									"    const place = responseJson[0]",
 									"    pm.expect(place.name).to.eql(`elit`)",
 									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
 									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
@@ -2275,7 +2241,7 @@
 					]
 				},
 				{
-					"name": "Find collection with points",
+					"name": "Find collection with places",
 					"event": [
 						{
 							"listen": "test",
@@ -2290,9 +2256,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
+									"    const place = responseJson[0]",
 									"    pm.expect(place.name).to.eql(`elit`)",
 									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
 									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
@@ -2313,13 +2277,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
-								":id"
+								":id",
+								"places"
 							],
 							"variable": [
 								{
@@ -2471,12 +2436,6 @@
 									"    const collection = responseJson[0]",
 									"",
 									"    pm.expect(collection.name).to.eql(`asada`)",
-									"",
-									"    const place = collection.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -2574,7 +2533,7 @@
 						}
 					],
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2595,14 +2554,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/places/:osmId/set-collections",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"places",
 								":osmId",
-								"collections"
+								"set-collections"
 							],
 							"variable": [
 								{
