@@ -4,9 +4,10 @@ import { PlacesController } from './places.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Place } from 'places/entities/place.entity'
 import { Collection } from 'collections/entities/collection.entity'
+import { ReviewsModule } from '../reviews/reviews.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Place, Collection])],
+  imports: [TypeOrmModule.forFeature([Place, Collection]), ReviewsModule],
   controllers: [PlacesController],
   providers: [PlacesService],
   exports: [PlacesService],

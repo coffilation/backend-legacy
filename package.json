@@ -20,6 +20,7 @@
     "orm:migration:create": "typeorm migration:create ./migrations/manual",
     "orm:migration:generate": "typeorm migration:generate ./migrations/generated -d ./.config/typeorm-data-source.js",
     "orm:migration:run": "typeorm migration:run -d ./.config/typeorm-data-source.js",
+    "orm:migration:revert": "typeorm migration:revert -d ./.config/typeorm-data-source.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main"

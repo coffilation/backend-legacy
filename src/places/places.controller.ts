@@ -15,13 +15,18 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { JwtUserId } from '../common/decorators/user.decorator'
+import { ReviewsService } from '../reviews/reviews.service'
+import { CreateReviewDto } from '../reviews/dto/create-review.dto'
 
 // @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard)
 @ApiTags(`places`)
 @Controller('places')
 export class PlacesController {
-  constructor(private readonly placesService: PlacesService) {}
+  constructor(
+    private readonly placesService: PlacesService,
+    private readonly reviewsService: ReviewsService,
+  ) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -80,5 +85,21 @@ export class PlacesController {
   @Delete(':osmId')
   remove(@Param('osmId', ParseIntPipe) osmId: number) {
     return this.placesService.remove(osmId)
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':osmId/reviews')
+  createPlaceReview(
+    @Param('osmId', ParseIntPipe) osmId: number,
+    @JwtUserId() userId: number,
+    @Body() createReviewDto: CreateReviewDto,
+  ) {
+    return this.reviewsService.createPlaceReview(osmId, userId, createReviewDto)
+  }
+
+  @Get(':osmId/reviews')
+  findAllPlaceReview(@Param('osmId', ParseIntPipe) osmId: number) {
+    return this.reviewsService.findAllPlaceReviews(osmId)
   }
 }
