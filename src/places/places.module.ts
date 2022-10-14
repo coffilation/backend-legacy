@@ -11,7 +11,6 @@ import { PlaceCollection } from '../collections/entities/place-collection.entity
 @Module({
   imports: [
     TypeOrmModule.forFeature([Place, Collection, PlaceCollection]),
-    ReviewsModule,
     forwardRef(() => CollectionsModule),
   ],
   controllers: [PlacesController],

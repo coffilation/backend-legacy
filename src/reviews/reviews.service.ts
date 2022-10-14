@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateReviewDto } from './dto/update-review.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Review } from './entities/review.entity'
+import { ReviewsQueryDto } from './dto/reviews-query.dto'
 
 @Injectable()
 export class ReviewsService {
@@ -13,23 +18,23 @@ export class ReviewsService {
   ) {}
 
   async createPlaceReview(
-    placeOsmId: number,
     userId: number,
+    { placeOsmId }: ReviewsQueryDto,
     createReviewDto: CreateReviewDto,
   ) {
     const review = await this.reviewRepository.save({
       authorId: userId,
-      placeId: placeOsmId,
+      placeOsmId,
       ...createReviewDto,
     })
 
     return this.findOne(review.id)
   }
 
-  findAllPlaceReviews(placeOsmId: number) {
+  findAllPlaceReviews({ placeOsmId }: ReviewsQueryDto) {
     return this.reviewRepository.find({
-      where: { place: { osmId: placeOsmId } },
-      relations: { place: true },
+      where: { placeOsmId },
+      relations: { author: true },
     })
   }
 
@@ -46,13 +51,29 @@ export class ReviewsService {
     return review
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    const review = this.findOne(id)
+  async update(
+    jwtUserId: number,
+    id: number,
+    updateReviewDto: UpdateReviewDto,
+  ): Promise<Review> {
+    const review = await this.checkEditAccessAndFind(jwtUserId, id)
 
     return this.reviewRepository.save({ ...review, ...updateReviewDto })
   }
 
-  async remove(id: number) {
+  async remove(jwtUserId: number, id: number) {
+    await this.checkEditAccessAndFind(jwtUserId, id)
+
     await this.reviewRepository.delete({ id })
+  }
+
+  async checkEditAccessAndFind(jwtUserId: number, reviewId: number) {
+    const review = await this.findOne(reviewId)
+
+    if (review.id !== jwtUserId) {
+      throw new ForbiddenException()
+    }
+
+    return review
   }
 }
