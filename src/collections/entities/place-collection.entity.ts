@@ -10,12 +10,16 @@ export class PlaceCollection {
   })
   placeOsmId: number
 
-  @ManyToOne(() => Place, (place) => place.placeCollections)
+  @ManyToOne(() => Place, (place) => place.placeCollections, {
+    onDelete: `CASCADE`,
+  })
   place: Place
 
   @PrimaryColumn()
   collectionId: number
 
-  @ManyToOne(() => Collection, (collection) => collection.placeCollections)
+  @ManyToOne(() => Collection, (collection) => collection.placeCollections, {
+    onDelete: `CASCADE`,
+  })
   collection: Collection
 }

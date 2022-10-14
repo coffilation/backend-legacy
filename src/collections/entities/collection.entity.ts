@@ -11,7 +11,7 @@ import { User } from 'users/entities/user.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 import { PlaceCollection } from './place-collection.entity'
-import { UserCollection } from "./user-collection.entity";
+import { UserCollection } from './user-collection.entity'
 
 export enum CollectionType {
   Public = `PUBLIC`,
@@ -37,13 +37,16 @@ export class Collection {
 
   @ApiHideProperty()
   @Exclude()
-  @OneToMany(() => UserCollection, userCollection => userCollection.collection)
+  @OneToMany(
+    () => UserCollection,
+    (userCollection) => userCollection.collection,
+  )
   userCollections: UserCollection[]
 
   @ApiHideProperty()
   @Exclude()
-  @Column()
-  authorId: number
+  @Column({ nullable: true })
+  authorId?: number
 
   @ManyToOne(() => User, { onDelete: `SET NULL` })
   @JoinColumn()

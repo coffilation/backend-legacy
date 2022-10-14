@@ -116,32 +116,28 @@ export class CollectionsService {
   async updateCollectionPlaces(
     jwtUserId: number,
     collectionId: number,
-    { placeIds }: UpdateCollectionPlacesDto,
+    { placeOsmIds }: UpdateCollectionPlacesDto,
   ) {
     await this.findOne(collectionId, jwtUserId)
-
-    const places = await this.placesService.findAll(jwtUserId, {
-      userId: jwtUserId,
-    })
 
     await this.placeCollectionRepository.delete({
       collectionId,
       placeOsmId: In(
-        places
-          .filter(({ osmId }) => !placeIds.includes(osmId))
-          .map(({ osmId }) => osmId),
+        placeOsmIds.filter((osmId) => !placeOsmIds.includes(osmId)),
       ),
     })
 
-    const actualPlaces = places.filter(({ osmId }) => placeIds.includes(osmId))
-
     await this.placeCollectionRepository.save(
-      actualPlaces.map(({ osmId }) => ({
-        collectionId,
-        placeOsmId: osmId,
-      })),
+      placeOsmIds
+        .filter((osmId) => placeOsmIds.includes(osmId))
+        .map((osmId) => ({
+          collectionId,
+          placeOsmId: osmId,
+        })),
     )
 
-    return actualPlaces
+    return this.placesService.findAll(jwtUserId, {
+      collectionId,
+    })
   }
 }

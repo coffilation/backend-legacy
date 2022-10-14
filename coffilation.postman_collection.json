@@ -346,7 +346,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -445,7 +445,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -544,7 +544,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -632,7 +632,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -721,7 +721,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -814,7 +814,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -920,7 +920,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -1036,7 +1036,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1128,7 +1128,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1197,19 +1197,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/my",
+							"raw": "{{baseUrl}}/places?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								"my"
+								"places"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1312,7 +1317,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1390,18 +1395,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections",
+							"raw": "{{baseUrl}}/collections?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1493,7 +1504,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1572,18 +1583,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections",
+							"raw": "{{baseUrl}}/collections?userId={{secondUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{secondUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1679,7 +1696,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1780,7 +1797,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -1887,7 +1904,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1948,7 +1965,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1961,7 +1978,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeIds\": [\n    21474836478\n  ]\n}\n",
+							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1969,14 +1986,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/remove-places",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
 								":id",
-								"remove-places"
+								"places"
 							],
 							"variable": [
 								{
@@ -1989,7 +2006,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2068,27 +2085,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/places",
+							"raw": "{{baseUrl}}/places?collectionId={{firstUserCollectionId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"collections",
-								":id",
 								"places"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"key": "collectionId",
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2153,7 +2167,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2166,7 +2180,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeIds\": [\n    21474836478\n  ]\n}",
+							"raw": "{\n  \"placeOsmIds\": [\n    21474836478\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2174,27 +2188,26 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/add-places",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
 								":id",
-								"add-places"
+								"places"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2277,27 +2290,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/places",
+							"raw": "{{baseUrl}}/places?collectionId={{firstUserCollectionId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"collections",
-								":id",
 								"places"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"key": "collectionId",
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2376,19 +2386,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/my",
+							"raw": "{{baseUrl}}/places?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								"my"
+								"places"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2452,27 +2467,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								":osmId",
 								"collections"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "placeOsmId",
+									"value": "21474836478"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2533,7 +2545,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2554,14 +2566,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/set-collections",
+							"raw": "{{baseUrl}}/places/:osmId/collections",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"places",
 								":osmId",
-								"set-collections"
+								"collections"
 							],
 							"variable": [
 								{
@@ -2574,7 +2586,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -2652,27 +2664,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								":osmId",
 								"collections"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "placeOsmId",
+									"value": "21474836478"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2755,7 +2764,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2837,7 +2846,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2919,7 +2928,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3012,7 +3021,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3105,7 +3114,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [

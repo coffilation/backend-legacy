@@ -24,7 +24,6 @@ import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
 
 @ApiTags(`collections`)
 @Controller('collections')
-@UseGuards(UnsafeExtractUserJwtAuthGuard)
 @ApiBearerAuth()
 export class CollectionsController {
   constructor(private readonly collectionsService: CollectionsService) {}
@@ -39,6 +38,8 @@ export class CollectionsController {
     return this.collectionsService.create(createCollectionDto, authorId)
   }
 
+  @ApiBearerAuth()
+  @UseGuards(UnsafeExtractUserJwtAuthGuard)
   @Get()
   findAll(
     @JwtUserId() jwtUserId: number,
@@ -47,13 +48,17 @@ export class CollectionsController {
     return this.collectionsService.findAll(jwtUserId, query)
   }
 
+  @ApiBearerAuth()
+  @UseGuards(UnsafeExtractUserJwtAuthGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number, @JwtUserId() userId: number) {
     return this.collectionsService.findOne(id, userId)
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':id/places')
-  addPlaces(
+  updatePlaces(
     @Param('id', ParseIntPipe) id: number,
     @Body() collectionPlacesDto: UpdateCollectionPlacesDto,
     @JwtUserId() jwtUserId: number,
@@ -65,6 +70,8 @@ export class CollectionsController {
     )
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
