@@ -7,16 +7,20 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
+  Query,
   UseGuards,
 } from '@nestjs/common'
 import { PlacesService } from './places.service'
 import { CreatePlaceDto } from './dto/create-place.dto'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { JwtUserId } from '../common/decorators/user.decorator'
 import { ReviewsService } from '../reviews/reviews.service'
 import { CreateReviewDto } from '../reviews/dto/create-review.dto'
+import { GetPlacesQueryDto } from './dto/get-places-query.dto'
+import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
 
 // @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard)
@@ -35,12 +39,11 @@ export class PlacesController {
     return this.placesService.create(createPlaceDto)
   }
 
-  @ApiOperation({ summary: `Список всех точек в своих коллекциях` })
-  @Get(`/my`)
+  @Get()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  findAll(@JwtUserId() userId: number) {
-    return this.placesService.findAll(userId)
+  @UseGuards(UnsafeExtractUserJwtAuthGuard)
+  findAll(@JwtUserId() jwtUserId: number, @Query() query: GetPlacesQueryDto) {
+    return this.placesService.findAll(jwtUserId, query)
   }
 
   @Get(':osmId')
@@ -50,34 +53,18 @@ export class PlacesController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':osmId/collections')
-  findPlaceCollections(@Param('osmId', ParseIntPipe) osmId: number) {
-    return this.placesService.findPlaceCollections(osmId)
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(200)
-  @Post(':osmId/set-collections')
+  @Put(':osmId/collections')
   updatePlaceCollections(
     @Param('osmId', ParseIntPipe) osmId: number,
+    @JwtUserId() jwtUserId,
     @Body() updatePlaceCollectionsDto: UpdatePlaceCollectionsDto,
   ) {
     return this.placesService.updatePlaceCollections(
+      jwtUserId,
       osmId,
       updatePlaceCollectionsDto,
     )
   }
-
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  // @Patch(':osmId')
-  // update(
-  //   @Param('osmId', ParseIntPipe) osmId: number,
-  //   @Body() updatePlaceDto: UpdatePlaceDto,
-  // ) {
-  //   return this.placesService.update(osmId, updatePlaceDto)
-  // }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

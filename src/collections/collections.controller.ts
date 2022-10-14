@@ -10,15 +10,17 @@ import {
   UseGuards,
   HttpCode,
   ParseIntPipe,
+  Put,
 } from '@nestjs/common'
 import { CollectionsService } from './collections.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { UpdateCollectionDto } from './dto/update-collection.dto'
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { JwtUserId } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
-import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
+import { UpdateCollectionPlacesDto } from 'collections/dto/update-collection-places.dto'
 import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
+import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
 
 @ApiTags(`collections`)
 @Controller('collections')
@@ -38,9 +40,11 @@ export class CollectionsController {
   }
 
   @Get()
-  @ApiQuery({ name: `authorId`, type: `number`, required: false })
-  findAll(@Query(`authorId`) authorId, @JwtUserId() userId: number) {
-    return this.collectionsService.findAll(authorId, userId)
+  findAll(
+    @JwtUserId() jwtUserId: number,
+    @Query() query: GetCollectionsQueryDto,
+  ) {
+    return this.collectionsService.findAll(jwtUserId, query)
   }
 
   @Get(':id')
@@ -48,32 +52,17 @@ export class CollectionsController {
     return this.collectionsService.findOne(id, userId)
   }
 
-  @Get(':id/places')
-  findAllPlaces(
-    @Param('id', ParseIntPipe) id: number,
-    @JwtUserId() userId: number,
-  ) {
-    return this.collectionsService.findAllPlaces(id, userId)
-  }
-
-  @HttpCode(200)
-  @Post(':id/add-places')
+  @Put(':id/places')
   addPlaces(
     @Param('id', ParseIntPipe) id: number,
-    @Body() collectionPlacesDto: CollectionPlacesDto,
-    @JwtUserId() userId: number,
+    @Body() collectionPlacesDto: UpdateCollectionPlacesDto,
+    @JwtUserId() jwtUserId: number,
   ) {
-    return this.collectionsService.addPlaces(id, collectionPlacesDto, userId)
-  }
-
-  @HttpCode(200)
-  @Post(':id/remove-places')
-  removePlaces(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() collectionPlacesDto: CollectionPlacesDto,
-    @JwtUserId() userId: number,
-  ) {
-    return this.collectionsService.removePlaces(id, collectionPlacesDto, userId)
+    return this.collectionsService.updateCollectionPlaces(
+      jwtUserId,
+      id,
+      collectionPlacesDto,
+    )
   }
 
   @Patch(':id')

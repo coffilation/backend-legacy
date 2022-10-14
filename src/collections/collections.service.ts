@@ -1,15 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import {
   Collection,
   CollectionType,
 } from 'collections/entities/collection.entity'
-import { FindOptionsWhere, Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
-import { CollectionPlacesDto } from 'collections/dto/collection-places.dto'
 import { UserCollection, UserRole } from './entities/user-collection.entity'
+import { PlaceCollection } from './entities/place-collection.entity'
+import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
 import { PlacesService } from '../places/places.service'
+import { UpdateCollectionPlacesDto } from './dto/update-collection-places.dto'
 
 @Injectable()
 export class CollectionsService {
@@ -20,6 +27,10 @@ export class CollectionsService {
     @InjectRepository(UserCollection)
     private userCollectionRepository: Repository<UserCollection>,
 
+    @InjectRepository(PlaceCollection)
+    private placeCollectionRepository: Repository<PlaceCollection>,
+
+    @Inject(forwardRef(() => PlacesService))
     private readonly placesService: PlacesService,
   ) {}
 
@@ -41,28 +52,41 @@ export class CollectionsService {
     return collection
   }
 
-  findAll(authorId: number | undefined, userId: number | undefined) {
-    const findOptionsWhere: FindOptionsWhere<Collection>[] = [
-      { authorId, type: CollectionType.Public },
-    ]
-
-    if (userId) {
-      findOptionsWhere.push({ authorId: userId })
-    }
-
+  findAll(
+    jwtUserId: number | undefined,
+    { userId, placeOsmId }: GetCollectionsQueryDto,
+  ) {
     return this.collectionsRepository.find({
-      relations: { places: true, author: true },
-      where: findOptionsWhere,
+      where: [
+        {
+          placeCollections: { placeOsmId },
+          type: CollectionType.Public,
+          userCollections: { userId },
+        },
+        {
+          placeCollections: { placeOsmId },
+          type: CollectionType.Private,
+          userCollections: {
+            userId: jwtUserId,
+            collection: { userCollections: { userId } },
+          },
+        },
+      ],
+      relations: {
+        author: true,
+        userCollections: true,
+        placeCollections: true,
+      },
     })
   }
 
   async findOne(id: number, userId: number) {
     const collection = await this.collectionsRepository.findOne({
       where: [
-        { id, authorId: userId },
+        { id, authorId: userId, type: CollectionType.Private },
         { id, type: CollectionType.Public },
       ],
-      relations: { places: true, author: true },
+      relations: { author: true },
     })
 
     if (!collection) {
@@ -70,38 +94,6 @@ export class CollectionsService {
     }
 
     return collection
-  }
-
-  async findAllPlaces(id: number, userId: number) {
-    return (await this.findOne(id, userId)).places
-  }
-
-  async addPlaces(
-    collectionId: number,
-    { placeIds }: CollectionPlacesDto,
-    userId: number,
-  ) {
-    const collection = await this.findOne(collectionId, userId)
-
-    const places = await this.placesService.findPlaces(placeIds)
-
-    collection.places.push(...places)
-
-    return (await this.collectionsRepository.save(collection)).places
-  }
-
-  async removePlaces(
-    collectionId: number,
-    { placeIds }: CollectionPlacesDto,
-    userId: number,
-  ) {
-    const collection = await this.findOne(collectionId, userId)
-
-    collection.places = collection.places.filter(
-      ({ osmId }) => !placeIds.includes(osmId),
-    )
-
-    return (await this.collectionsRepository.save(collection)).places
   }
 
   async update(
@@ -117,19 +109,39 @@ export class CollectionsService {
     })
   }
 
-  // async join(id: number, user: User) {
-  //   const collection = await this.collectionsRepository.findOne({
-  //     where: { id, type: CollectionType.Public },
-  //   })
-  //
-  //   if (!collection) {
-  //     throw new NotFoundException()
-  //   }
-  //
-  //   await this.userCollectionRepository.save({ user, collection })
-  // }
-
   async remove(id: number) {
     await this.collectionsRepository.delete(id)
+  }
+
+  async updateCollectionPlaces(
+    jwtUserId: number,
+    collectionId: number,
+    { placeIds }: UpdateCollectionPlacesDto,
+  ) {
+    await this.findOne(collectionId, jwtUserId)
+
+    const places = await this.placesService.findAll(jwtUserId, {
+      userId: jwtUserId,
+    })
+
+    await this.placeCollectionRepository.delete({
+      collectionId,
+      placeOsmId: In(
+        places
+          .filter(({ osmId }) => !placeIds.includes(osmId))
+          .map(({ osmId }) => osmId),
+      ),
+    })
+
+    const actualPlaces = places.filter(({ osmId }) => placeIds.includes(osmId))
+
+    await this.placeCollectionRepository.save(
+      actualPlaces.map(({ osmId }) => ({
+        collectionId,
+        placeOsmId: osmId,
+      })),
+    )
+
+    return actualPlaces
   }
 }

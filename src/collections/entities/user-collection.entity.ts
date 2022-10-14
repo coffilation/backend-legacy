@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
 import { User } from 'users/entities/user.entity'
 import { Collection } from './collection.entity'
 
@@ -28,8 +21,10 @@ export class UserCollection {
   @JoinColumn()
   user: User
 
-  @ManyToOne(() => Collection, { onDelete: `CASCADE` })
-  @JoinTable()
+  @ManyToOne(() => Collection, (collection) => collection.userCollections, {
+    onDelete: `CASCADE`,
+  })
+  @JoinColumn()
   collection: Collection
 
   @Column({
