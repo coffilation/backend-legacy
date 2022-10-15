@@ -1,16 +1,17 @@
 import {
   Column,
   Entity,
-  ManyToMany,
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm'
-import { Place } from 'places/entities/place.entity'
 import { User } from 'users/entities/user.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
+import { PlaceCollection } from './place-collection.entity'
+import { UserCollection } from './user-collection.entity'
 
 export enum CollectionType {
   Public = `PUBLIC`,
@@ -25,20 +26,31 @@ export class Collection {
   @Column()
   name: string
 
-  @ManyToMany(() => Place, (place) => place.collections, {
-    onDelete: `CASCADE`,
-  })
+  @ApiHideProperty()
+  @Exclude()
+  @OneToMany(
+    () => PlaceCollection,
+    (placeCollection) => placeCollection.collection,
+  )
   @JoinTable()
-  places: Place[]
+  placeCollections: PlaceCollection[]
 
   @ApiHideProperty()
   @Exclude()
-  @Column()
-  authorId: number
+  @OneToMany(
+    () => UserCollection,
+    (userCollection) => userCollection.collection,
+  )
+  userCollections: UserCollection[]
 
-  @ManyToOne(() => User, { onDelete: `CASCADE` })
+  @ApiHideProperty()
+  @Exclude()
+  @Column({ nullable: true })
+  authorId?: number
+
+  @ManyToOne(() => User, { onDelete: `SET NULL` })
   @JoinColumn()
-  author: User
+  author?: User
 
   @Column({
     type: `enum`,
@@ -47,5 +59,3 @@ export class Collection {
   })
   type: CollectionType
 }
-
-export type FlatCollection = Omit<Collection, `places`>

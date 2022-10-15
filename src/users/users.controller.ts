@@ -40,12 +40,6 @@ export class UsersController {
   //   return this.usersService.findAll()
   // }
 
-  @ApiOperation({ summary: `Получить id пользователя по username'у` })
-  @Get(':username/id')
-  getId(@Param('username') username: string) {
-    return this.usersService.findOneByUsername(username)
-  }
-
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
@@ -80,5 +74,11 @@ export class UsersController {
     @JwtUserId() userId: number,
   ) {
     await this.usersService.remove(id, userId)
+  }
+
+  @ApiOperation({ summary: `Получить id пользователя по username'у` })
+  @Get(':username/id')
+  getId(@Param('username') username: string) {
+    return this.usersService.findOneByUsername(username)
   }
 }

@@ -1,11 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { CreatePlaceDto } from './dto/create-place.dto'
-import { UpdatePlaceDto } from './dto/update-place.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { Place } from 'places/entities/place.entity'
-import { Collection } from 'collections/entities/collection.entity'
+import { CollectionType } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
+import { GetPlacesQueryDto } from './dto/get-places-query.dto'
+import { PlaceCollection } from '../collections/entities/place-collection.entity'
+import { CollectionsService } from '../collections/collections.service'
 
 @Injectable()
 export class PlacesService {
@@ -13,8 +20,11 @@ export class PlacesService {
     @InjectRepository(Place)
     private placeRepository: Repository<Place>,
 
-    @InjectRepository(Collection)
-    private collectionsRepository: Repository<Collection>,
+    @InjectRepository(PlaceCollection)
+    private placeCollectionRepository: Repository<PlaceCollection>,
+
+    @Inject(forwardRef(() => CollectionsService))
+    private readonly collectionsService: CollectionsService,
   ) {}
 
   async create(createPlaceDto: CreatePlaceDto) {
@@ -25,9 +35,33 @@ export class PlacesService {
     )
   }
 
-  findAll(authorId: number) {
+  findAll(jwtUserId: number, { collectionId, userId }: GetPlacesQueryDto) {
     return this.placeRepository.find({
-      where: { collections: { authorId } },
+      where: {
+        placeCollections: {
+          collectionId,
+          collection: [
+            {
+              type: CollectionType.Public,
+              userCollections: { userId },
+            },
+            {
+              type: CollectionType.Private,
+              userCollections: {
+                userId: jwtUserId,
+                collection: { userCollections: { userId } },
+              },
+            },
+          ],
+        },
+      },
+      relations: {
+        placeCollections: {
+          collection: {
+            userCollections: true,
+          },
+        },
+      },
     })
   }
 
@@ -41,52 +75,41 @@ export class PlacesService {
     return place
   }
 
-  async findPlaceCollections(osmId: number) {
-    const place = await this.placeRepository.findOne({
-      where: { osmId },
-      relations: { collections: { places: true } },
-    })
-
-    if (!place) {
-      throw new NotFoundException()
-    }
-
-    return place.collections
-  }
-
   async updatePlaceCollections(
+    jwtUserId: number,
     osmId: number,
     { collectionIds }: UpdatePlaceCollectionsDto,
   ) {
-    const place = await this.findOne(osmId)
+    await this.findOne(osmId)
 
-    const collections = await this.collectionsRepository.findBy({
-      id: In(collectionIds),
+    const collection = await this.collectionsService.findAll(jwtUserId, {
+      userId: jwtUserId,
     })
 
-    await this.placeRepository.save({ ...place, collections })
-
-    return collections
-  }
-
-  async update(osmId: number, updatePlaceDto: UpdatePlaceDto): Promise<Place> {
-    const place = await this.placeRepository.findOneBy({ osmId })
-
-    const updatedPlace = await this.placeRepository.save({
-      ...place,
-      ...updatePlaceDto,
+    await this.placeCollectionRepository.delete({
+      placeOsmId: osmId,
+      collectionId: In(
+        collection
+          .filter(({ id }) => !collectionIds.includes(id))
+          .map(({ id }) => id),
+      ),
     })
 
-    updatedPlace.osmId = osmId
+    const actualCollections = collection.filter(({ id }) =>
+      collectionIds.includes(id),
+    )
 
-    return updatedPlace
+    await this.placeCollectionRepository.save(
+      actualCollections.map(({ id }) => ({
+        placeOsmId: osmId,
+        collectionId: id,
+      })),
+    )
+
+    return actualCollections
   }
 
   async remove(osmId: number) {
     await this.placeRepository.delete({ osmId })
-  }
-
-  findPlaces(osmIds: number[]) {
-    return this.placeRepository.findBy({ osmId: In(osmIds) })
   }
 }

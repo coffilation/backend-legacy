@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm'
-import { Collection } from 'collections/entities/collection.entity'
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { ApiHideProperty } from '@nestjs/swagger'
-import { Exclude, Transform } from 'class-transformer'
+import { Exclude } from 'class-transformer'
+import { PlaceCollection } from '../../collections/entities/place-collection.entity'
 
 @Entity()
 export class Place {
@@ -10,10 +10,11 @@ export class Place {
 
   @ApiHideProperty()
   @Exclude()
-  @ManyToMany(() => Collection, (collection) => collection.places, {
-    onDelete: `CASCADE`,
-  })
-  collections: Collection[]
+  @OneToMany(
+    () => PlaceCollection,
+    (placeCollections) => placeCollections.place,
+  )
+  placeCollections: PlaceCollection[]
 
   @Column({ type: `float` })
   latitude: number
@@ -21,7 +22,9 @@ export class Place {
   @Column({ type: `float` })
   longitude: number
 
-  @PrimaryColumn({ type: `bigint` })
-  @Transform(({ value }) => +value)
+  @PrimaryColumn({
+    type: `bigint`,
+    transformer: { from: (value) => +value, to: (value) => value },
+  })
   osmId: number
 }

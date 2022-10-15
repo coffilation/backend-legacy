@@ -346,7 +346,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -445,7 +445,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -544,7 +544,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -632,7 +632,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -721,7 +721,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -814,7 +814,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -920,7 +920,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -1036,7 +1036,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1128,7 +1128,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1197,19 +1197,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/my",
+							"raw": "{{baseUrl}}/places?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								"my"
+								"places"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1258,13 +1263,8 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
+									"    pm.expect(responseJson.id).to.be.a(`number`)",
 									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"",
 									"    pm.collectionVariables.set(`firstUserCollectionId`, responseJson.id)",
 									"})",
@@ -1317,7 +1317,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1379,12 +1379,6 @@
 									"",
 									"    const collection = responseJson[0]",
 									"    pm.expect(collection.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = collection.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1401,18 +1395,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections",
+							"raw": "{{baseUrl}}/collections?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1469,12 +1469,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1510,7 +1504,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1589,18 +1583,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections",
+							"raw": "{{baseUrl}}/collections?userId={{secondUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{secondUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1696,7 +1696,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1749,12 +1749,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1803,7 +1797,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -1865,12 +1859,6 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -1916,7 +1904,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1968,9 +1956,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    pm.expect(responseJson.places.length).to.eql(0)",
+									"    pm.expect(responseJson.length).to.eql(0)",
 									"})",
 									""
 								],
@@ -1979,7 +1965,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1992,7 +1978,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeIds\": [\n    21474836478\n  ]\n}\n",
+							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2000,14 +1986,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/remove-places",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
 								":id",
-								"remove-places"
+								"places"
 							],
 							"variable": [
 								{
@@ -2020,7 +2006,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2082,9 +2068,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    pm.expect(responseJson.places.length).to.eql(0)",
+									"    pm.expect(responseJson.length).to.eql(0)",
 									"})",
 									""
 								],
@@ -2101,26 +2085,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id",
+							"raw": "{{baseUrl}}/places?collectionId={{firstUserCollectionId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"collections",
-								":id"
+								"places"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"key": "collectionId",
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2172,9 +2154,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
+									"    const place = responseJson[0]",
 									"    pm.expect(place.name).to.eql(`elit`)",
 									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
 									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
@@ -2187,7 +2167,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2200,7 +2180,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeIds\": [\n    21474836478\n  ]\n}",
+							"raw": "{\n  \"placeOsmIds\": [\n    21474836478\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2208,27 +2188,26 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id/add-places",
+							"raw": "{{baseUrl}}/collections/:id/places",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"collections",
 								":id",
-								"add-places"
+								"places"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2275,7 +2254,7 @@
 					]
 				},
 				{
-					"name": "Find collection with points",
+					"name": "Find collection with places",
 					"event": [
 						{
 							"listen": "test",
@@ -2290,9 +2269,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.name).to.eql(`asada`)",
-									"",
-									"    const place = responseJson.places[0]",
+									"    const place = responseJson[0]",
 									"    pm.expect(place.name).to.eql(`elit`)",
 									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
 									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
@@ -2313,26 +2290,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections/:id",
+							"raw": "{{baseUrl}}/places?collectionId={{firstUserCollectionId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"collections",
-								":id"
+								"places"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "id",
-									"value": "{{firstUserCollectionId}}",
-									"description": "(Required) "
+									"key": "collectionId",
+									"value": "{{firstUserCollectionId}}"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2411,19 +2386,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/my",
+							"raw": "{{baseUrl}}/places?userId={{firstUserId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								"my"
+								"places"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{firstUserId}}"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2471,12 +2451,6 @@
 									"    const collection = responseJson[0]",
 									"",
 									"    pm.expect(collection.name).to.eql(`asada`)",
-									"",
-									"    const place = collection.places[0]",
-									"    pm.expect(place.name).to.eql(`elit`)",
-									"    pm.expect(place.latitude).to.eql(47410603.68473661)",
-									"    pm.expect(place.longitude).to.eql(-90839607.4737693)",
-									"    pm.expect(place.osmId).to.eql(21474836478)",
 									"})",
 									""
 								],
@@ -2493,27 +2467,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								":osmId",
 								"collections"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "placeOsmId",
+									"value": "21474836478"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2615,7 +2586,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -2693,27 +2664,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								":osmId",
 								"collections"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "placeOsmId",
+									"value": "21474836478"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2796,7 +2764,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2878,7 +2846,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2960,7 +2928,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3053,7 +3021,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3146,7 +3114,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
