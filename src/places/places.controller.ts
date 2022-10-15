@@ -17,7 +17,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { JwtUserId } from '../common/decorators/user.decorator'
-import { ReviewsService } from '../reviews/reviews.service'
 import { GetPlacesQueryDto } from './dto/get-places-query.dto'
 import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
 
@@ -26,9 +25,7 @@ import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-use
 @ApiTags(`places`)
 @Controller('places')
 export class PlacesController {
-  constructor(
-    private readonly placesService: PlacesService,
-  ) {}
+  constructor(private readonly placesService: PlacesService) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
