@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -28,11 +29,13 @@ export class PlacesService {
   ) {}
 
   async create(createPlaceDto: CreatePlaceDto) {
-    return this.placeRepository.findOneBy(
-      await this.placeRepository.save({
-        ...createPlaceDto,
-      }),
-    )
+    if (await this.placeRepository.findOneBy({ osmId: createPlaceDto.osmId })) {
+      throw new BadRequestException(`osmId must be unique`)
+    }
+
+    return this.placeRepository.save({
+      ...createPlaceDto,
+    })
   }
 
   findAll(jwtUserId: number, { collectionId, userId }: GetPlacesQueryDto) {
