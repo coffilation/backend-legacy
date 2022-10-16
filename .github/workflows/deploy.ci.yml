@@ -52,7 +52,7 @@ jobs:
       - name: Build and export image to docker
         uses: docker/build-push-action@v3
         with:
-          file: .config/docker/Dockerfile
+          file: ../../Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
       - name: Test image
         env:
@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          file: .config/docker/Dockerfile
+          file: ../../Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
 
   Deploy:
@@ -82,7 +82,10 @@ jobs:
             export VERSION=$VERSION
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /home/github/coffilation-backend
+            cd /home/github/coffilation-deploy
             git fetch origin main
             git reset --hard origin/main
-            yarn ci:prod
+            cd ..
+            docker image prune -a -f --filter "until=24h"
+            docker compose run migrations
+            docker compose up -d nest --no-build --remove-orphans
