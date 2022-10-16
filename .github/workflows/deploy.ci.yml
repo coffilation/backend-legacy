@@ -9,7 +9,7 @@ jobs:
   Prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2
         with:
           path: node_modules
@@ -20,7 +20,7 @@ jobs:
     needs: Prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2
         with:
           path: node_modules
@@ -31,7 +31,7 @@ jobs:
     needs: Prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2
         with:
           path: node_modules
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
