@@ -11,7 +11,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }),
+    new FastifyAdapter({ logger: true, ignoreTrailingSlash: true }),
   )
 
   app.enableCors()
