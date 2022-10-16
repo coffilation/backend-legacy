@@ -16,7 +16,6 @@ services:
       - pg
     build:
       context: ../..
-      dockerfile: .config/docker/Dockerfile
     environment:
       DB_HOST: 'pg'
       POSTGRES_USER: 'user'
@@ -32,7 +31,6 @@ services:
   nest:
     build:
       context: ../..
-      dockerfile: .config/docker/Dockerfile
     environment:
       DB_HOST: 'pg'
       POSTGRES_USER: 'user'
