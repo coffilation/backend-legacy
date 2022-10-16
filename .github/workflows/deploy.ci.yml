@@ -82,10 +82,10 @@ jobs:
             export VERSION=$VERSION
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /home/github/coffilation-deploy
+            cd /home/github/coffilation-deploy/services/backend
             git fetch origin main
             git reset --hard origin/main
-            cd ..
+            cd ../..
             docker image prune -a -f --filter "until=24h"
             docker compose run migrations
             docker compose up -d nest --no-build --remove-orphans
