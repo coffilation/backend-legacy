@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('./yarn.lock') }}
@@ -52,7 +52,7 @@ jobs:
       - name: Build and export image to docker
         uses: docker/build-push-action@v3
         with:
-          file: ../../Dockerfile
+          file: Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
       - name: Test image
         env:
@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          file: ../../Dockerfile
+          file: Dockerfile
           tags: xalvaine/coffilation-backend:${{ github.ref_name }}
 
   Deploy:
@@ -79,7 +79,7 @@ jobs:
           envs: VERSION
           script: |
             set -e
-            export VERSION=$VERSION
+            export BACKEND_VERSION=$VERSION
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /home/github/coffilation-deploy/services/backend
@@ -87,5 +87,5 @@ jobs:
             git reset --hard origin/main
             cd ../..
             docker image prune -a -f --filter "until=24h"
-            docker compose run migrations
-            docker compose up -d nest --no-build --remove-orphans
+            docker compose run backend_migrations
+            docker compose up -d backend --no-build --remove-orphans
