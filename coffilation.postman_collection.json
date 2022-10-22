@@ -346,7 +346,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -445,7 +445,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -544,7 +544,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -632,7 +632,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -721,7 +721,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -814,7 +814,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -920,7 +920,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -996,6 +996,11 @@
 									"    pm.expect(responseJson.latitude).to.eql(55.755831)",
 									"    pm.expect(responseJson.longitude).to.eql(37.617673)",
 									"    pm.expect(responseJson.osmId).to.eql(21474836478)",
+									"    pm.expect(responseJson.osmType).to.eql(`string`)",
+									"    pm.expect(responseJson.displayName).to.eql(`string`)",
+									"    pm.expect(responseJson.category).to.eql(`string`)",
+									"    pm.expect(responseJson.type).to.eql(`string`)",
+									"    pm.expect(responseJson.address).to.deep.eq({ 'municipality': `string` })",
 									"})",
 									""
 								],
@@ -1017,7 +1022,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478\n}\n",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1036,7 +1041,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1128,7 +1133,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1214,7 +1219,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1317,7 +1322,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1412,7 +1417,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1504,7 +1509,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1600,7 +1605,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1696,7 +1701,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1797,7 +1802,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -1904,7 +1909,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2006,7 +2011,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2102,7 +2107,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2207,7 +2212,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2307,7 +2312,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2403,7 +2408,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2484,7 +2489,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2586,7 +2591,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -2681,7 +2686,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2764,7 +2769,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2846,7 +2851,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -2928,7 +2933,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3021,7 +3026,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3114,7 +3119,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
