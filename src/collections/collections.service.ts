@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   forwardRef,
   Inject,
   Injectable,
@@ -15,7 +16,7 @@ import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 import { UserCollection, UserRole } from './entities/user-collection.entity'
 import { PlaceCollection } from './entities/place-collection.entity'
 import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
-import { PlacesService } from '../places/places.service'
+import { PlacesService } from 'places/places.service'
 import { UpdateCollectionPlacesDto } from './dto/update-collection-places.dto'
 
 @Injectable()
@@ -34,6 +35,13 @@ export class CollectionsService {
     private readonly placesService: PlacesService,
   ) {}
 
+  roleAssignationAbilities = {
+    [UserRole.Member]: [UserRole.Member],
+    [UserRole.Editor]: [UserRole.Member],
+    [UserRole.Admin]: [UserRole.Member, UserRole.Editor, UserRole.Admin],
+    [UserRole.Owner]: [UserRole.Member, UserRole.Editor, UserRole.Admin],
+  }
+
   async create(
     { ...createCollectionDto }: CreateCollectionDto,
     userId: number,
@@ -43,11 +51,7 @@ export class CollectionsService {
       authorId: userId,
     })
 
-    await this.userCollectionRepository.save({
-      collection,
-      userId,
-      role: UserRole.Owner,
-    })
+    await this.join(collection.id, userId, UserRole.Owner)
 
     return collection
   }
@@ -80,14 +84,24 @@ export class CollectionsService {
     })
   }
 
-  async findOne(id: number, userId: number) {
-    const collection = await this.collectionsRepository.findOne({
+  async findOneWithoutException(id: number, userId: number) {
+    return await this.collectionsRepository.findOne({
       where: [
-        { id, authorId: userId, type: CollectionType.Private },
+        {
+          id,
+          type: CollectionType.Private,
+          userCollections: {
+            userId: userId,
+          },
+        },
         { id, type: CollectionType.Public },
       ],
       relations: { author: true },
     })
+  }
+
+  async findOne(id: number, userId: number) {
+    const collection = await this.findOneWithoutException(id, userId)
 
     if (!collection) {
       throw new NotFoundException()
@@ -138,6 +152,25 @@ export class CollectionsService {
 
     return this.placesService.findAll(jwtUserId, {
       collectionId,
+    })
+  }
+
+  async findOneUserCollection(collectionId: number, userId: number) {
+    return await this.userCollectionRepository.findOneBy({
+      collectionId,
+      userId,
+    })
+  }
+
+  async join(collectionId: number, userId: number, role: UserRole) {
+    if (await this.findOneWithoutException(collectionId, userId)) {
+      throw new ForbiddenException()
+    }
+
+    await this.userCollectionRepository.save({
+      collectionId,
+      userId,
+      role,
     })
   }
 }
