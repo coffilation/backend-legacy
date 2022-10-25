@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator'
 import { CollectionType } from '../entities/collection.entity'
 
 export class CreateCollectionDto {
@@ -9,4 +15,9 @@ export class CreateCollectionDto {
   @IsOptional()
   @IsEnum(CollectionType)
   type: CollectionType
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 1024)
+  description?: string
 }
