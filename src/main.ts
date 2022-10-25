@@ -28,7 +28,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
 
   SwaggerModule.setup(``, app, document, {
-    uiConfig: {
+    swaggerOptions: {
       persistAuthorization: true,
       layout: `BaseLayout`,
       displayRequestDuration: true,
