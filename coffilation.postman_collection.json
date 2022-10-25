@@ -1270,6 +1270,7 @@
 									"",
 									"    pm.expect(responseJson.id).to.be.a(`number`)",
 									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
+									"    pm.expect(responseJson.description).to.eql(`descrasdiption`)",
 									"",
 									"    pm.collectionVariables.set(`firstUserCollectionId`, responseJson.id)",
 									"})",
@@ -1303,7 +1304,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"places\": [\n    21474836478\n  ],\n  \"type\": \"PRIVATE\"\n}\n",
+							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1754,6 +1755,7 @@
 									"    const responseJson = pm.response.json()",
 									"",
 									"    pm.expect(responseJson.name).to.eql(`asada`)",
+									"    pm.expect(responseJson.description).to.eql(`descrasdiption`)",
 									"})",
 									""
 								],
@@ -1776,6 +1778,117 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"asada\",\n  \"type\": \"PUBLIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"commodo officia aliquip\",\n  \"type\": \"PUBLIC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 536868.3659441322,\n  \"name\": \"occaecat exercita\",\n  \"places\": [\n    {\n      \"id\": 38152948.55456507,\n      \"name\": \"in eiusmod sunt\",\n      \"latitude\": -67052106.38382106,\n      \"longitude\": -26170714.30845073,\n      \"osmId\": 59024866.93135142\n    },\n    {\n      \"id\": -61294810.204828165,\n      \"name\": \"ut sunt do\",\n      \"latitude\": -37358843.968296275,\n      \"longitude\": 14486252.573158786,\n      \"osmId\": -75295628.45866336\n    }\n  ],\n  \"author\": {\n    \"id\": 99579330.37630418,\n    \"username\": \"et laborum ad\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Change collection description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.name).to.eql(`asada`)",
+									"    pm.expect(responseJson.description).to.eql(`hjsbdfjh asdhbfsb dj`)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"hjsbdfjh asdhbfsb dj\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

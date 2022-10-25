@@ -12,6 +12,7 @@ import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 import { PlaceCollection } from './place-collection.entity'
 import { UserCollection } from './user-collection.entity'
+import { Length } from 'class-validator'
 
 export enum CollectionType {
   Public = `PUBLIC`,
@@ -25,6 +26,10 @@ export class Collection {
 
   @Column()
   name: string
+
+  @Length(0, 1024)
+  @Column({ length: 1024, nullable: true })
+  description?: string
 
   @ApiHideProperty()
   @Exclude()
