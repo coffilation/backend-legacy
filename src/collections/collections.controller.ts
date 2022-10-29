@@ -19,7 +19,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { JwtUserId } from 'common/decorators/user.decorator'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 import { UpdateCollectionPlacesDto } from 'collections/dto/update-collection-places.dto'
-import { UnsafeExtractUserJwtAuthGuard } from '../auth/guards/unsafe-extract-user-jwt-auth.guard'
+import { UnsafeExtractUserJwtAuthGuard } from 'auth/guards/unsafe-extract-user-jwt-auth.guard'
 import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
 
 @ApiTags(`collections`)
@@ -88,7 +88,10 @@ export class CollectionsController {
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.collectionsService.remove(id)
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @JwtUserId() jwtUserId: number,
+  ) {
+    return this.collectionsService.remove(jwtUserId, id)
   }
 }
