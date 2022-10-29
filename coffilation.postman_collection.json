@@ -346,7 +346,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -436,7 +436,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -535,7 +535,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -634,7 +634,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -722,7 +722,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -806,7 +806,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -895,7 +895,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -988,104 +988,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "Added as a part of security scheme: bearer",
-										"key": "Authorization",
-										"value": "Bearer <token>"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/users/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username",
-											"value": "ea ut est consequat velit",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Users get by id 401",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const statusCode = 401",
-									"",
-									"pm.test(`Status code is ${statusCode}`, () => {",
-									"  pm.expect(pm.response.code).to.eql(statusCode)",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "wrong token lol",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{firstUserId}}"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1191,7 +1094,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -1310,7 +1213,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -1425,7 +1328,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1527,7 +1430,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1625,7 +1528,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1721,7 +1624,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1816,7 +1719,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1902,7 +1805,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2006,7 +1909,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -2108,7 +2011,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -2212,7 +2115,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -2307,7 +2210,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -2399,7 +2302,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2495,7 +2398,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -2591,7 +2494,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2693,7 +2596,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -2807,7 +2710,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -2918,7 +2821,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -3025,7 +2928,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -3131,7 +3034,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -3247,7 +3150,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -3359,7 +3262,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -3455,7 +3358,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -3560,7 +3463,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -3660,7 +3563,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -3756,7 +3659,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -3837,7 +3740,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -3939,7 +3842,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -4034,7 +3937,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -4127,7 +4030,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -4204,7 +4107,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -4286,7 +4189,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -4379,7 +4282,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -4472,7 +4375,7 @@
 					},
 					"response": [
 						{
-							"name": "response",
+							"name": "Untitled Example",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
