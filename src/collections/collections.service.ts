@@ -123,8 +123,15 @@ export class CollectionsService {
     })
   }
 
-  async remove(id: number) {
-    await this.collectionsRepository.delete(id)
+  async remove(jwtUserId: number, collectionId: number) {
+    if (
+      (await this.findOneUserCollection(collectionId, jwtUserId)).role !==
+      UserRole.Owner
+    ) {
+      throw new ForbiddenException()
+    }
+
+    await this.collectionsRepository.delete(collectionId)
   }
 
   async updateCollectionPlaces(
