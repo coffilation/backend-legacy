@@ -24,7 +24,6 @@ import { GetCollectionsQueryDto } from './dto/get-collections-query.dto'
 
 @ApiTags(`collections`)
 @Controller('collections')
-@ApiBearerAuth()
 export class CollectionsController {
   constructor(private readonly collectionsService: CollectionsService) {}
 
@@ -88,6 +87,8 @@ export class CollectionsController {
 
   @HttpCode(204)
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   remove(
     @Param('id', ParseIntPipe) id: number,
     @JwtUserId() jwtUserId: number,
