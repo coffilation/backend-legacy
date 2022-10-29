@@ -185,21 +185,6 @@ export class CollectionsService {
     userId: number,
     allowedPermissions: UserRole[],
   ) {
-    console.log(
-      userId,
-      allowedPermissions,
-      (await this.findOneUserCollection(collectionId, userId)).role,
-      await this.collectionsRepository.findOne({
-        where: { id: collectionId },
-        relations: { userCollections: true },
-      }),
-      (
-        await this.collectionsRepository.findOne({
-          where: { id: collectionId },
-          relations: { userCollections: { user: true } },
-        })
-      ).userCollections?.[0].user,
-    )
     if (
       !allowedPermissions.includes(
         (await this.findOneUserCollection(collectionId, userId)).role,
