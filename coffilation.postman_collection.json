@@ -346,7 +346,97 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"consectetur sed\",\n  \"password\": \"consequat in velit t\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access\": \"ea\",\n  \"refresh\": \"veniam deserunt velit culpa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "First user login with wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserUsername}}\",\n  \"password\": \"officia sitt\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -445,7 +535,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -544,7 +634,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -632,7 +722,91 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/me",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Users get me 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -721,7 +895,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -814,7 +988,104 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Users get by id 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -920,7 +1191,126 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"irure in consequat mollit\",\n  \"password\": \"reprehen\",\n  \"rePassword\": \"aliquip proident\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68044358.05190289,\n  \"username\": \"nisi\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Patch username 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{firstUserAlternativeUsername}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [
@@ -976,6 +1366,102 @@
 		{
 			"name": "Places",
 			"item": [
+				{
+					"name": "Create place 400 (validation)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.statusCode).to.eql(400)",
+									"    pm.expect(responseJson.error).to.be.a(`string`)",
+									"    responseJson.message.forEach((val) => pm.expect(val).to.be.a(`string`))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/places",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 47410603.68473661,\n  \"longitude\": -90839607.4737693,\n  \"osmId\": -99821309.51597887\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
+						}
+					]
+				},
 				{
 					"name": "Create place",
 					"event": [
@@ -1041,7 +1527,201 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 47410603.68473661,\n  \"longitude\": -90839607.4737693,\n  \"osmId\": -99821309.51597887\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
+						}
+					]
+				},
+				{
+					"name": "Create place 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/places",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 47410603.68473661,\n  \"longitude\": -90839607.4737693,\n  \"osmId\": -99821309.51597887\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
+						}
+					]
+				},
+				{
+					"name": "Create place 400 (typeorm)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.error).to.be.a(`string`)",
+									"    pm.expect(responseJson.statusCode).to.eql(400)",
+									"    pm.expect(responseJson.message).to.be.a(`string`)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/places",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -1106,6 +1786,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1133,7 +1816,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1219,7 +1902,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1323,7 +2006,213 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nulla deserunt\",\n  \"places\": [\n    -98429195.7638054,\n    25883008.680972576\n  ],\n  \"type\": \"PRIVATE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 14967045.538535252,\n  \"name\": \"Ut enim in\",\n  \"places\": [\n    {\n      \"id\": -42731088.481767945,\n      \"name\": \"dolore voluptate\",\n      \"latitude\": 63037862.50830385,\n      \"longitude\": -58464356.09797776,\n      \"osmId\": 79035798.47840488\n    },\n    {\n      \"id\": 81864534.7079503,\n      \"name\": \"nulla ipsum tempor dolor\",\n      \"latitude\": -84079778.59933133,\n      \"longitude\": 7904363.308799535,\n      \"osmId\": -84124079.90486264\n    }\n  ],\n  \"author\": {\n    \"id\": 1039967.4007899314,\n    \"username\": \"id ad velit irure\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create first user private collection 400 (validation)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.statusCode).to.eql(400)",
+									"    pm.expect(responseJson.error).to.be.a(`string`)",
+									"    responseJson.message.forEach((val) => pm.expect(val).to.be.a(`string`))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nulla deserunt\",\n  \"places\": [\n    -98429195.7638054,\n    25883008.680972576\n  ],\n  \"type\": \"PRIVATE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 14967045.538535252,\n  \"name\": \"Ut enim in\",\n  \"places\": [\n    {\n      \"id\": -42731088.481767945,\n      \"name\": \"dolore voluptate\",\n      \"latitude\": 63037862.50830385,\n      \"longitude\": -58464356.09797776,\n      \"osmId\": 79035798.47840488\n    },\n    {\n      \"id\": 81864534.7079503,\n      \"name\": \"nulla ipsum tempor dolor\",\n      \"latitude\": -84079778.59933133,\n      \"longitude\": 7904363.308799535,\n      \"osmId\": -84124079.90486264\n    }\n  ],\n  \"author\": {\n    \"id\": 1039967.4007899314,\n    \"username\": \"id ad velit irure\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create first user private collection 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1418,7 +2307,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1510,7 +2399,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1606,7 +2495,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1702,7 +2591,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1804,7 +2693,121 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"commodo officia aliquip\",\n  \"type\": \"PUBLIC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 536868.3659441322,\n  \"name\": \"occaecat exercita\",\n  \"places\": [\n    {\n      \"id\": 38152948.55456507,\n      \"name\": \"in eiusmod sunt\",\n      \"latitude\": -67052106.38382106,\n      \"longitude\": -26170714.30845073,\n      \"osmId\": 59024866.93135142\n    },\n    {\n      \"id\": -61294810.204828165,\n      \"name\": \"ut sunt do\",\n      \"latitude\": -37358843.968296275,\n      \"longitude\": 14486252.573158786,\n      \"osmId\": -75295628.45866336\n    }\n  ],\n  \"author\": {\n    \"id\": 99579330.37630418,\n    \"username\": \"et laborum ad\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Make collection public 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"asada\",\n  \"type\": \"PUBLIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -1915,7 +2918,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "PATCH",
 								"header": [],
@@ -2022,7 +3025,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2046,6 +3049,238 @@
 							},
 							"status": "OK",
 							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 536868.3659441322,\n  \"name\": \"occaecat exercita\",\n  \"places\": [\n    {\n      \"id\": 38152948.55456507,\n      \"name\": \"in eiusmod sunt\",\n      \"latitude\": -67052106.38382106,\n      \"longitude\": -26170714.30845073,\n      \"osmId\": 59024866.93135142\n    },\n    {\n      \"id\": -61294810.204828165,\n      \"name\": \"ut sunt do\",\n      \"latitude\": -37358843.968296275,\n      \"longitude\": 14486252.573158786,\n      \"osmId\": -75295628.45866336\n    }\n  ],\n  \"author\": {\n    \"id\": 99579330.37630418,\n    \"username\": \"et laborum ad\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Remove places 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 403",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:id/places",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":id",
+								"places"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"placeIds\": [\n    -86929945.57618712,\n    62458587.290613115\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/:id/remove-places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										":id",
+										"remove-places"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 536868.3659441322,\n  \"name\": \"occaecat exercita\",\n  \"places\": [\n    {\n      \"id\": 38152948.55456507,\n      \"name\": \"in eiusmod sunt\",\n      \"latitude\": -67052106.38382106,\n      \"longitude\": -26170714.30845073,\n      \"osmId\": 59024866.93135142\n    },\n    {\n      \"id\": -61294810.204828165,\n      \"name\": \"ut sunt do\",\n      \"latitude\": -37358843.968296275,\n      \"longitude\": 14486252.573158786,\n      \"osmId\": -75295628.45866336\n    }\n  ],\n  \"author\": {\n    \"id\": 99579330.37630418,\n    \"username\": \"et laborum ad\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Remove places 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 401",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "wrong token lol",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:id/places",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":id",
+								"places"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"placeIds\": [\n    -86929945.57618712,\n    62458587.290613115\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/:id/remove-places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										":id",
+										"remove-places"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -2124,7 +3359,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2220,7 +3455,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2325,7 +3560,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
@@ -2425,7 +3660,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2521,7 +3756,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2602,7 +3837,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2704,7 +3939,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
@@ -2799,7 +4034,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -2839,16 +4074,16 @@
 			]
 		},
 		{
-			"name": "Delete places",
+			"name": "Delete collections",
 			"item": [
 				{
-					"name": "Remove place",
+					"name": "Delete collection 403",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const statusCode = 204",
+									"const statusCode = 403",
 									"",
 									"pm.test(`Status code is ${statusCode}`, () => {",
 									"  pm.expect(pm.response.code).to.eql(statusCode)",
@@ -2860,21 +4095,31 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId",
+							"raw": "{{baseUrl}}/collections/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"places",
-								":osmId"
+								"collections",
+								":id"
 							],
 							"variable": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
+									"key": "id",
+									"value": "{{firstUserCollectionId}}",
 									"description": "(Required) "
 								}
 							]
@@ -2882,30 +4127,30 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/places/:osmId",
+									"raw": "{{baseUrl}}/collections/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"places",
-										":osmId"
+										"collections",
+										":id"
 									],
 									"variable": [
 										{
-											"key": "osmId",
+											"key": "id",
 											"value": "ea ut est consequat velit",
 											"description": "(Required) "
 										}
 									]
 								}
 							},
-							"status": "No Content",
-							"code": 204,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -2917,12 +4162,7 @@
 							"body": ""
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Delete collections",
-			"item": [
+				},
 				{
 					"name": "Delete collection",
 					"event": [
@@ -2964,7 +4204,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
@@ -3046,7 +4286,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3139,7 +4379,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -3232,7 +4472,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Example",
+							"name": "response",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [

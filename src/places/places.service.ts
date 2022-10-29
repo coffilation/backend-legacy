@@ -12,8 +12,8 @@ import { Place } from 'places/entities/place.entity'
 import { CollectionType } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { GetPlacesQueryDto } from './dto/get-places-query.dto'
-import { PlaceCollection } from '../collections/entities/place-collection.entity'
-import { CollectionsService } from '../collections/collections.service'
+import { PlaceCollection } from 'collections/entities/place-collection.entity'
+import { CollectionsService } from 'collections/collections.service'
 
 @Injectable()
 export class PlacesService {
@@ -112,7 +112,9 @@ export class PlacesService {
     return actualCollections
   }
 
-  async remove(osmId: number) {
-    await this.placeRepository.delete({ osmId })
-  }
+  // async remove(osmId: number) {
+  //   this.collectionsService.checkUserPermissions()
+  //
+  //   await this.placeRepository.delete({ osmId })
+  // }
 }

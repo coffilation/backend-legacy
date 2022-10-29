@@ -116,6 +116,11 @@ export class CollectionsService {
     userId: number,
   ): Promise<Collection> {
     const collection = await this.findOne(id, userId)
+    await this.checkUserPermissions(id, userId, [
+      UserRole.Editor,
+      UserRole.Admin,
+      UserRole.Owner,
+    ])
 
     return this.collectionsRepository.save({
       ...collection,
@@ -124,12 +129,7 @@ export class CollectionsService {
   }
 
   async remove(jwtUserId: number, collectionId: number) {
-    if (
-      (await this.findOneUserCollection(collectionId, jwtUserId)).role !==
-      UserRole.Owner
-    ) {
-      throw new ForbiddenException()
-    }
+    await this.checkUserPermissions(collectionId, jwtUserId, [UserRole.Owner])
 
     await this.collectionsRepository.delete(collectionId)
   }
@@ -140,6 +140,11 @@ export class CollectionsService {
     { placeOsmIds }: UpdateCollectionPlacesDto,
   ) {
     await this.findOne(collectionId, jwtUserId)
+    await this.checkUserPermissions(collectionId, jwtUserId, [
+      UserRole.Editor,
+      UserRole.Admin,
+      UserRole.Owner,
+    ])
 
     await this.placeCollectionRepository.delete({
       collectionId,
@@ -163,10 +168,45 @@ export class CollectionsService {
   }
 
   async findOneUserCollection(collectionId: number, userId: number) {
-    return await this.userCollectionRepository.findOneBy({
+    const userCollection = await this.userCollectionRepository.findOneBy({
       collectionId,
       userId,
     })
+
+    if (!userCollection) {
+      throw new ForbiddenException()
+    }
+
+    return userCollection
+  }
+
+  async checkUserPermissions(
+    collectionId: number,
+    userId: number,
+    allowedPermissions: UserRole[],
+  ) {
+    console.log(
+      userId,
+      allowedPermissions,
+      (await this.findOneUserCollection(collectionId, userId)).role,
+      await this.collectionsRepository.findOne({
+        where: { id: collectionId },
+        relations: { userCollections: true },
+      }),
+      (
+        await this.collectionsRepository.findOne({
+          where: { id: collectionId },
+          relations: { userCollections: { user: true } },
+        })
+      ).userCollections?.[0].user,
+    )
+    if (
+      !allowedPermissions.includes(
+        (await this.findOneUserCollection(collectionId, userId)).role,
+      )
+    ) {
+      throw new ForbiddenException()
+    }
   }
 
   async join(collectionId: number, userId: number, role: UserRole) {
