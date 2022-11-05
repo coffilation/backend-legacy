@@ -1,13 +1,13 @@
-import { IsPositive, ValidateIf } from 'class-validator'
+import { IsOptional, IsPositive } from 'class-validator'
 import { Type } from 'class-transformer'
 
 export class GetCollectionsQueryDto {
-  @ValidateIf(({ placeOsmId, userId }) => !userId || placeOsmId)
+  @IsOptional()
   @Type(() => Number)
   @IsPositive()
   placeOsmId?: number
 
-  @ValidateIf(({ placeOsmId, userId }) => !placeOsmId || userId)
+  @IsOptional()
   @Type(() => Number)
   @IsPositive()
   userId?: number
