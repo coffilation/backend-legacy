@@ -39,31 +39,23 @@ export class PlacesController {
     return this.placesService.findAll(jwtUserId, query)
   }
 
-  @Get(':osmId')
-  async findOne(@Param('osmId', ParseIntPipe) osmId: number) {
-    return await this.placesService.findOne(osmId)
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) placeId: number) {
+    return await this.placesService.findOne(placeId)
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Put(':osmId/collections')
+  @Put(':id/collections')
   updatePlaceCollections(
-    @Param('osmId', ParseIntPipe) osmId: number,
+    @Param('id', ParseIntPipe) placeId: number,
     @JwtUserId() jwtUserId,
     @Body() updatePlaceCollectionsDto: UpdatePlaceCollectionsDto,
   ) {
     return this.placesService.updatePlaceCollections(
       jwtUserId,
-      osmId,
+      placeId,
       updatePlaceCollectionsDto,
     )
   }
-
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  // @HttpCode(204)
-  // @Delete(':osmId')
-  // remove(@Param('osmId', ParseIntPipe) osmId: number, @JwtUserId() jwtUserId: number) {
-  //   return this.placesService.remove(osmId)
-  // }
 }

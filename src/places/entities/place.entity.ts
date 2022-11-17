@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 import { PlaceCollection } from 'collections/entities/place-collection.entity'
@@ -60,7 +66,11 @@ export class Address {
 }
 
 @Entity()
+@Unique([`osmId`, `osmType`, `category`])
 export class Place {
+  @PrimaryGeneratedColumn()
+  id: number
+
   @Column()
   name: string
 
@@ -78,7 +88,7 @@ export class Place {
   @Column({ type: `float` })
   longitude: number
 
-  @PrimaryColumn({
+  @Column({
     type: `bigint`,
     transformer: { from: (value) => +value, to: (value) => value },
   })
@@ -96,6 +106,6 @@ export class Place {
   @Column()
   type: string
 
-  @Column(`simple-json`)
+  @Column(`json`)
   address: Address
 }

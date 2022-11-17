@@ -13,7 +13,7 @@ import { Exclude } from 'class-transformer'
 import { User } from '../../users/entities/user.entity'
 
 @Entity()
-@Unique([`authorId`, `placeOsmId`])
+@Unique([`authorId`, `placeId`])
 export class Review {
   @PrimaryGeneratedColumn()
   id: number
@@ -39,7 +39,7 @@ export class Review {
   @ApiHideProperty()
   @Exclude()
   @Column()
-  placeOsmId: number
+  placeId: number
 
   @ApiHideProperty()
   @Exclude()

@@ -5,7 +5,7 @@ export class GetCollectionsQueryDto {
   @IsOptional()
   @Type(() => Number)
   @IsPositive()
-  placeOsmId?: number
+  placeId?: number
 
   @IsOptional()
   @Type(() => Number)

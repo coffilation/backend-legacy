@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -29,10 +28,6 @@ export class PlacesService {
   ) {}
 
   async create(createPlaceDto: CreatePlaceDto) {
-    if (await this.placeRepository.findOneBy({ osmId: createPlaceDto.osmId })) {
-      throw new BadRequestException(`osmId must be unique`)
-    }
-
     return this.placeRepository.save({
       ...createPlaceDto,
     })
@@ -68,8 +63,8 @@ export class PlacesService {
     })
   }
 
-  async findOne(osmId: number) {
-    const place = await this.placeRepository.findOneBy({ osmId })
+  async findOne(placeId: number) {
+    const place = await this.placeRepository.findOneBy({ id: placeId })
 
     if (!place) {
       throw new NotFoundException()
@@ -80,17 +75,17 @@ export class PlacesService {
 
   async updatePlaceCollections(
     jwtUserId: number,
-    osmId: number,
+    placeId: number,
     { collectionIds }: UpdatePlaceCollectionsDto,
   ) {
-    await this.findOne(osmId)
+    await this.findOne(placeId)
 
     const collection = await this.collectionsService.findAll(jwtUserId, {
       userId: jwtUserId,
     })
 
     await this.placeCollectionRepository.delete({
-      placeOsmId: osmId,
+      placeId,
       collectionId: In(
         collection
           .filter(({ id }) => !collectionIds.includes(id))
@@ -104,17 +99,11 @@ export class PlacesService {
 
     await this.placeCollectionRepository.save(
       actualCollections.map(({ id }) => ({
-        placeOsmId: osmId,
+        placeId,
         collectionId: id,
       })),
     )
 
     return actualCollections
   }
-
-  // async remove(osmId: number) {
-  //   this.collectionsService.checkUserPermissions()
-  //
-  //   await this.placeRepository.delete({ osmId })
-  // }
 }
