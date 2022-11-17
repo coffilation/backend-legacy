@@ -1390,6 +1390,8 @@
 									"    pm.expect(responseJson.category).to.eql(`string`)",
 									"    pm.expect(responseJson.type).to.eql(`string`)",
 									"    pm.expect(responseJson.address).to.deep.eq({ 'municipality': `string` })",
+									"",
+									"    pm.collectionVariables.set(`placeId`, responseJson.id)",
 									"})",
 									""
 								],
@@ -1581,7 +1583,7 @@
 									"pm.test(`The response has all properties`, () => {",
 									"    const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.error).to.be.a(`string`)",
+									"    pm.expect(responseJson.path).to.be.a(`string`)",
 									"    pm.expect(responseJson.statusCode).to.eql(400)",
 									"    pm.expect(responseJson.message).to.be.a(`string`)",
 									"})",
@@ -1700,19 +1702,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId",
+							"raw": "{{baseUrl}}/places/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"places",
-								":osmId"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "id",
+									"value": "{{placeId}}"
 								}
 							]
 						}
@@ -3120,7 +3121,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
+							"raw": "{\n  \"placeIds\": [\n    \n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3236,7 +3237,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
+							"raw": "{\n  \"placeIds\": [\n    \n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3348,7 +3349,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeOsmIds\": [\n    \n  ]\n}\n",
+							"raw": "{\n  \"placeIds\": [\n    \n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3550,7 +3551,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"placeOsmIds\": [\n    21474836478\n  ]\n}",
+							"raw": "{\n  \"placeIds\": [\n    {{placeId}}\n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3837,7 +3838,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
+							"raw": "{{baseUrl}}/collections?placeId={{placeId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3846,8 +3847,8 @@
 							],
 							"query": [
 								{
-									"key": "placeOsmId",
-									"value": "21474836478"
+									"key": "placeId",
+									"value": "{{placeId}}"
 								}
 							]
 						}
@@ -3936,20 +3937,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/places/:osmId/collections",
+							"raw": "{{baseUrl}}/places/:id/collections",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"places",
-								":osmId",
+								":id",
 								"collections"
 							],
 							"variable": [
 								{
-									"key": "osmId",
-									"value": "21474836478",
-									"description": "(Required) "
+									"key": "id",
+									"value": "{{placeId}}"
 								}
 							]
 						}
@@ -4034,7 +4034,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/collections?placeOsmId=21474836478",
+							"raw": "{{baseUrl}}/collections?placeId={{placeId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -4043,8 +4043,8 @@
 							],
 							"query": [
 								{
-									"key": "placeOsmId",
-									"value": "21474836478"
+									"key": "placeId",
+									"value": "{{placeId}}"
 								}
 							]
 						}
@@ -4625,6 +4625,11 @@
 		{
 			"key": "secondUserId",
 			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "placeId",
+			"value": "",
 			"type": "string"
 		}
 	]

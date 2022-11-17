@@ -4,5 +4,5 @@ import { Type } from 'class-transformer'
 export class ReviewsQueryDto {
   @Type(() => Number)
   @IsPositive()
-  placeOsmId: number
+  placeId: number
 }

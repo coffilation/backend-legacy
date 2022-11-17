@@ -19,21 +19,21 @@ export class ReviewsService {
 
   async createPlaceReview(
     userId: number,
-    { placeOsmId }: ReviewsQueryDto,
+    { placeId }: ReviewsQueryDto,
     createReviewDto: CreateReviewDto,
   ) {
     const review = await this.reviewRepository.save({
       authorId: userId,
-      placeOsmId,
+      placeId,
       ...createReviewDto,
     })
 
     return this.findOne(review.id)
   }
 
-  findAllPlaceReviews({ placeOsmId }: ReviewsQueryDto) {
+  findAllPlaceReviews({ placeId }: ReviewsQueryDto) {
     return this.reviewRepository.find({
-      where: { placeOsmId },
+      where: { placeId },
       relations: { author: true },
     })
   }

@@ -58,17 +58,17 @@ export class CollectionsService {
 
   findAll(
     jwtUserId: number | undefined,
-    { userId, placeOsmId }: GetCollectionsQueryDto,
+    { userId, placeId }: GetCollectionsQueryDto,
   ) {
     return this.collectionsRepository.find({
       where: [
         {
-          placeCollections: { placeOsmId },
+          placeCollections: { placeId },
           type: CollectionType.Public,
           userCollections: { userId },
         },
         {
-          placeCollections: { placeOsmId },
+          placeCollections: { placeId },
           type: CollectionType.Private,
           userCollections: {
             userId: jwtUserId,
@@ -137,7 +137,7 @@ export class CollectionsService {
   async updateCollectionPlaces(
     jwtUserId: number,
     collectionId: number,
-    { placeOsmIds }: UpdateCollectionPlacesDto,
+    { placeIds }: UpdateCollectionPlacesDto,
   ) {
     await this.findOne(collectionId, jwtUserId)
     await this.checkUserPermissions(collectionId, jwtUserId, [
@@ -148,18 +148,13 @@ export class CollectionsService {
 
     await this.placeCollectionRepository.delete({
       collectionId,
-      placeOsmId: In(
-        placeOsmIds.filter((osmId) => !placeOsmIds.includes(osmId)),
-      ),
+      placeId: In(placeIds.filter((placeId) => !placeIds.includes(placeId))),
     })
 
     await this.placeCollectionRepository.save(
-      placeOsmIds
-        .filter((osmId) => placeOsmIds.includes(osmId))
-        .map((osmId) => ({
-          collectionId,
-          placeOsmId: osmId,
-        })),
+      placeIds
+        .filter((placeId) => placeIds.includes(placeId))
+        .map((placeId) => ({ collectionId, placeId })),
     )
 
     return this.placesService.findAll(jwtUserId, {

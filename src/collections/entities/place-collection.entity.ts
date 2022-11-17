@@ -1,18 +1,16 @@
-import { Entity, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
 import { Collection } from './collection.entity'
 import { Place } from '../../places/entities/place.entity'
 
 @Entity()
 export class PlaceCollection {
-  @PrimaryColumn({
-    type: `bigint`,
-    transformer: { from: (value) => +value, to: (value) => value },
-  })
-  placeOsmId: number
+  @PrimaryColumn()
+  placeId: number
 
   @ManyToOne(() => Place, (place) => place.placeCollections, {
     onDelete: `CASCADE`,
   })
+  @JoinColumn()
   place: Place
 
   @PrimaryColumn()

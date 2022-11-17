@@ -47,7 +47,7 @@ services:
     image: postman/newman:5.3-alpine
     working_dir: /etc/newman
     volumes:
-      - ../../coffilation.postman_collection.json:/etc/newman/coffilation.postman_collection.json
+      - ../../.config/coffilation.postman_collection.json:/etc/newman/coffilation.postman_collection.json
     command: run coffilation.postman_collection.json --verbose
     profiles:
       - newman
