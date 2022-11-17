@@ -19,6 +19,17 @@ export enum CollectionType {
   Private = `PRIVATE`,
 }
 
+class Color {
+  red: number
+  green: number
+  blue: number
+}
+
+class CollectionGradient {
+  startColor: Color
+  endColor: Color
+}
+
 @Entity()
 export class Collection {
   @PrimaryGeneratedColumn()
@@ -63,4 +74,7 @@ export class Collection {
     default: CollectionType.Private,
   })
   type: CollectionType
+
+  @Column({ type: `json`, nullable: true })
+  gradient?: CollectionGradient
 }
