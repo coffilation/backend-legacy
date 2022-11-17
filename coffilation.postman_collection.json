@@ -1852,13 +1852,25 @@
 									"})",
 									"",
 									"pm.test(`The response has all properties`, () => {",
-									"    const responseJson = pm.response.json()",
+									"  const responseJson = pm.response.json()",
 									"",
-									"    pm.expect(responseJson.id).to.be.a(`number`)",
-									"    pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
-									"    pm.expect(responseJson.description).to.eql(`descrasdiption`)",
+									"  pm.expect(responseJson.id).to.be.a(`number`)",
+									"  pm.expect(responseJson.name).to.eql(`ut incididunt proident sint dolor`)",
+									"  pm.expect(responseJson.description).to.eql(`descrasdiption`)",
+									"  pm.expect(responseJson.gradient).to.deep.equal({",
+									"    startColor: {",
+									"      red: 255,",
+									"      green: 255,",
+									"      blue: 255,",
+									"    },",
+									"    endColor: {",
+									"      red: 255,",
+									"      green: 255,",
+									"      blue: 255,",
+									"    },",
+									"  })",
 									"",
-									"    pm.collectionVariables.set(`firstUserCollectionId`, responseJson.id)",
+									"  pm.collectionVariables.set(`firstUserCollectionId`, responseJson.id)",
 									"})",
 									""
 								],
@@ -1890,7 +1902,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\"\n}\n",
+							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\",\n  \"gradient\": {\n      \"startColor\": {\n        \"red\": 255,\n        \"green\": 255,\n        \"blue\": 255\n      },\n      \"endColor\": {\n        \"red\": 255,\n        \"green\": 255,\n        \"blue\": 255\n    }\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1993,6 +2005,108 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nulla deserunt\",\n  \"places\": [\n    -98429195.7638054,\n    25883008.680972576\n  ],\n  \"type\": \"PRIVATE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 14967045.538535252,\n  \"name\": \"Ut enim in\",\n  \"places\": [\n    {\n      \"id\": -42731088.481767945,\n      \"name\": \"dolore voluptate\",\n      \"latitude\": 63037862.50830385,\n      \"longitude\": -58464356.09797776,\n      \"osmId\": 79035798.47840488\n    },\n    {\n      \"id\": 81864534.7079503,\n      \"name\": \"nulla ipsum tempor dolor\",\n      \"latitude\": -84079778.59933133,\n      \"longitude\": 7904363.308799535,\n      \"osmId\": -84124079.90486264\n    }\n  ],\n  \"author\": {\n    \"id\": 1039967.4007899314,\n    \"username\": \"id ad velit irure\"\n  },\n  \"type\": \"PRIVATE\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create first user private collection 400 (gradient validation)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 400",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.statusCode).to.eql(400)",
+									"    pm.expect(responseJson.error).to.be.a(`string`)",
+									"    responseJson.message.forEach((val) => pm.expect(val).to.be.a(`string`))",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ut incididunt proident sint dolor\",\n  \"description\": \"descrasdiption\", \n  \"type\": \"PRIVATE\",\n  \"gradient\": {\n      \"startColor\": {\n        \"red\": 255,\n        \"green\": 255\n      },\n      \"endColor\": {\n        \"red\": 255,\n        \"green\": 255,\n        \"blue\": 256\n    }\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
