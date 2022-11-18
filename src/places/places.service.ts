@@ -13,6 +13,7 @@ import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { GetPlacesQueryDto } from './dto/get-places-query.dto'
 import { PlaceCollection } from 'collections/entities/place-collection.entity'
 import { CollectionsService } from 'collections/collections.service'
+import { FindPlaceByOsmDataParamsDto } from './dto/find-place-by-osm-data-params.dto'
 
 @Injectable()
 export class PlacesService {
@@ -65,6 +66,24 @@ export class PlacesService {
 
   async findOne(placeId: number) {
     const place = await this.placeRepository.findOneBy({ id: placeId })
+
+    if (!place) {
+      throw new NotFoundException()
+    }
+
+    return place
+  }
+
+  async findOneByOsmData({
+    category,
+    osmId,
+    osmType,
+  }: FindPlaceByOsmDataParamsDto) {
+    const place = await this.placeRepository.findOneBy({
+      category,
+      osmId,
+      osmType,
+    })
 
     if (!place) {
       throw new NotFoundException()
