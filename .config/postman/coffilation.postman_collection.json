@@ -1385,10 +1385,10 @@
 									"    pm.expect(responseJson.latitude).to.eql(55.755831)",
 									"    pm.expect(responseJson.longitude).to.eql(37.617673)",
 									"    pm.expect(responseJson.osmId).to.eql(21474836478)",
-									"    pm.expect(responseJson.osmType).to.eql(`string`)",
+									"    pm.expect(responseJson.osmType).to.eql(`fff`)",
 									"    pm.expect(responseJson.displayName).to.eql(`string`)",
-									"    pm.expect(responseJson.category).to.eql(`string`)",
-									"    pm.expect(responseJson.type).to.eql(`string`)",
+									"    pm.expect(responseJson.category).to.eql(`cat`)",
+									"    pm.expect(responseJson.type).to.eql(`node`)",
 									"    pm.expect(responseJson.address).to.deep.eq({ 'municipality': `string` })",
 									"",
 									"    pm.collectionVariables.set(`placeId`, responseJson.id)",
@@ -1413,7 +1413,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"fff\",\n  \"displayName\": \"string\",\n  \"category\": \"cat\",\n  \"type\": \"node\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1607,7 +1607,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"string\",\n  \"displayName\": \"string\",\n  \"category\": \"string\",\n  \"type\": \"string\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
+							"raw": "{\n  \"name\": \"elit\",\n  \"latitude\": 55.755831,\n  \"longitude\": 37.617673,\n  \"osmId\": 21474836478,\n  \"osmType\": \"fff\",\n  \"displayName\": \"string\",\n  \"category\": \"cat\",\n  \"type\": \"node\",\n  \"address\": {\n    \"municipality\": \"string\"\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1757,6 +1757,109 @@
 					]
 				},
 				{
+					"name": "Get place by nominatim data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 200",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									"",
+									"pm.test(`The response has all properties`, () => {",
+									"    const responseJson = pm.response.json()",
+									"",
+									"    pm.expect(responseJson.name).to.eql(`elit`)",
+									"    pm.expect(responseJson.latitude).to.eql(55.755831)",
+									"    pm.expect(responseJson.longitude).to.eql(37.617673)",
+									"    pm.expect(responseJson.osmId).to.eql(21474836478)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/places/:osmId/:osmType/:category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places",
+								":osmId",
+								":osmType",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "osmId",
+									"value": "21474836478"
+								},
+								{
+									"key": "osmType",
+									"value": "fff"
+								},
+								{
+									"key": "category",
+									"value": "cat"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/places/:osmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places",
+										":osmId"
+									],
+									"variable": [
+										{
+											"key": "osmId",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
+						}
+					]
+				},
+				{
 					"name": "Get empty places array",
 					"event": [
 						{
@@ -1831,6 +1934,184 @@
 							],
 							"cookie": [],
 							"body": "[\n  {\n    \"id\": -13558060.678136468,\n    \"name\": \"exercitation et\",\n    \"latitude\": -68988683.05092804,\n    \"longitude\": -28907044.189646497,\n    \"osmId\": -58722197.89098452\n  },\n  {\n    \"id\": 13633918.582254842,\n    \"name\": \"ut\",\n    \"latitude\": 77386310.69151562,\n    \"longitude\": 88991580.73299018,\n    \"osmId\": -65787863.18853562\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get place 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 404",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/places/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "999999999"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/places/:osmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places",
+										":osmId"
+									],
+									"variable": [
+										{
+											"key": "osmId",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
+						}
+					]
+				},
+				{
+					"name": "Get place by nominatim data 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const statusCode = 404",
+									"",
+									"pm.test(`Status code is ${statusCode}`, () => {",
+									"  pm.expect(pm.response.code).to.eql(statusCode)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/places/:osmId/:osmType/:category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"places",
+								":osmId",
+								":osmType",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "osmId",
+									"value": "1236512"
+								},
+								{
+									"key": "osmType",
+									"value": "fff"
+								},
+								{
+									"key": "category",
+									"value": "cat"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/places/:osmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"places",
+										":osmId"
+									],
+									"variable": [
+										{
+											"key": "osmId",
+											"value": "ea ut est consequat velit",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 68730121.4424108,\n  \"name\": \"veniam ulla\",\n  \"latitude\": 78300726.41756153,\n  \"longitude\": -39981341.411437966,\n  \"osmId\": -97064123.97760223\n}"
 						}
 					]
 				}

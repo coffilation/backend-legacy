@@ -11,12 +11,13 @@ import {
 } from '@nestjs/common'
 import { PlacesService } from './places.service'
 import { CreatePlaceDto } from './dto/create-place.dto'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 import { JwtUserId } from 'common/decorators/user.decorator'
 import { GetPlacesQueryDto } from './dto/get-places-query.dto'
 import { UnsafeExtractUserJwtAuthGuard } from 'auth/guards/unsafe-extract-user-jwt-auth.guard'
+import { FindPlaceByOsmDataParamsDto } from './dto/find-place-by-osm-data-params.dto'
 
 // @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard)
@@ -39,9 +40,16 @@ export class PlacesController {
     return this.placesService.findAll(jwtUserId, query)
   }
 
+  @ApiOperation({ summary: `Получить точку по id на бэкенде` })
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) placeId: number) {
     return await this.placesService.findOne(placeId)
+  }
+
+  @ApiOperation({ summary: `Получить точку по данным из nominatim` })
+  @Get(':osmId/:osmType/:category')
+  async findOneByOsmData(@Param() params: FindPlaceByOsmDataParamsDto) {
+    return await this.placesService.findOneByOsmData(params)
   }
 
   @ApiBearerAuth()
