@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -7,6 +8,7 @@ import {
 import { CreatePlaceDto } from './dto/create-place.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
+import { HttpService } from '@nestjs/axios'
 import { Place } from 'places/entities/place.entity'
 import { CollectionType } from 'collections/entities/collection.entity'
 import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
@@ -14,6 +16,8 @@ import { GetPlacesQueryDto } from './dto/get-places-query.dto'
 import { PlaceCollection } from 'collections/entities/place-collection.entity'
 import { CollectionsService } from 'collections/collections.service'
 import { FindPlaceByOsmDataParamsDto } from './dto/find-place-by-osm-data-params.dto'
+import { lastValueFrom } from 'rxjs'
+import { FastifyRequest } from 'fastify'
 
 @Injectable()
 export class PlacesService {
@@ -26,6 +30,8 @@ export class PlacesService {
 
     @Inject(forwardRef(() => CollectionsService))
     private readonly collectionsService: CollectionsService,
+
+    private readonly httpService: HttpService,
   ) {}
 
   async create(createPlaceDto: CreatePlaceDto) {
@@ -74,16 +80,50 @@ export class PlacesService {
     return place
   }
 
-  async findOneByOsmData({
-    category,
-    osmId,
-    osmType,
-  }: FindPlaceByOsmDataParamsDto) {
-    const place = await this.placeRepository.findOneBy({
-      category,
-      osmId,
-      osmType,
-    })
+  async findOneByOsmData(
+    findPlaceByOsmDataParamsDto: FindPlaceByOsmDataParamsDto,
+    request: FastifyRequest,
+  ) {
+    const place = await this.placeRepository.findOneBy(
+      findPlaceByOsmDataParamsDto,
+    )
+
+    if (!place && process.env.PLACE_LOOKUP_ENDPOINT) {
+      const headers: Record<string, string> = {}
+
+      if (request.headers.referer) {
+        headers.referer = request.headers.referer
+      }
+
+      try {
+        const { data } = await lastValueFrom(
+          this.httpService.get<Omit<Place, `id`>>(
+            process.env.PLACE_LOOKUP_ENDPOINT,
+            {
+              params: findPlaceByOsmDataParamsDto,
+              headers,
+            },
+          ),
+        )
+
+        return this.create(data)
+      } catch (error) {
+        if (error.response.status === 404) {
+          throw new NotFoundException()
+        }
+
+        if (
+          error.response.status === 400 &&
+          (error.response.data.message || error.response.data.message)
+        ) {
+          throw new BadRequestException(
+            error.response.data.message || error.response.data.message,
+          )
+        }
+
+        throw error
+      }
+    }
 
     if (!place) {
       throw new NotFoundException()

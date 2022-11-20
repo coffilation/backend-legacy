@@ -38,6 +38,7 @@ services:
       JWT_ACCESS_SECRET: 'we_have_no_secrets'
       JWT_REFRESH_SECRET: 'we_have_no_secrets'
       NEST_ADDRESS: '0.0.0.0'
+      PLACE_LOOKUP_ENDPOINT: "${PLACE_LOOKUP_ENDPOINT}"
     volumes:
       - nest_node_modules:/home/app/node_modules
     working_dir: /home/app
