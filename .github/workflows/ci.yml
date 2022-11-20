@@ -54,6 +54,8 @@ jobs:
 
   E2E:
     runs-on: ubuntu-latest
+    env:
+      PLACE_LOOKUP_ENDPOINT: ${{ secrets.PLACE_LOOKUP_ENDPOINT }}
     steps:
       - uses: actions/checkout@v3
       - run: yarn ci:e2e

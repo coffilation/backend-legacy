@@ -57,6 +57,7 @@ jobs:
       - name: Test image
         env:
           VERSION: ${{ github.ref_name }}
+          PLACE_LOOKUP_ENDPOINT: ${{ secrets.PLACE_LOOKUP_ENDPOINT }}
         run: yarn deploy:e2e
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
