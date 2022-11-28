@@ -89,18 +89,23 @@ export class CollectionsService {
     })
   }
 
-  async findOneWithoutException(id: number, userId: number) {
-    return await this.collectionsRepository.findOne({
-      where: [
-        {
-          id,
-          type: CollectionType.Private,
-          userCollections: {
-            userId: userId,
-          },
+  async findOneWithoutException(id: number, jwtUserId: number) {
+    const where: FindOptionsWhere<Collection>[] = [
+      { id, type: CollectionType.Public },
+    ]
+
+    if (jwtUserId) {
+      where.push({
+        id,
+        type: CollectionType.Private,
+        userCollections: {
+          userId: jwtUserId,
         },
-        { id, type: CollectionType.Public },
-      ],
+      })
+    }
+
+    return await this.collectionsRepository.findOne({
+      where,
       relations: { author: true },
     })
   }
