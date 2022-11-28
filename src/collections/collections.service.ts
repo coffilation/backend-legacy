@@ -11,7 +11,7 @@ import {
   Collection,
   CollectionType,
 } from 'collections/entities/collection.entity'
-import { In, Repository } from 'typeorm'
+import { FindOptionsWhere, In, Repository } from 'typeorm'
 import { UpdateCollectionDto } from 'collections/dto/update-collection.dto'
 import { UserCollection, UserRole } from './entities/user-collection.entity'
 import { PlaceCollection } from './entities/place-collection.entity'
@@ -60,22 +60,27 @@ export class CollectionsService {
     jwtUserId: number | undefined,
     { userId, placeId }: GetCollectionsQueryDto,
   ) {
+    const where: FindOptionsWhere<Collection>[] = [
+      {
+        placeCollections: { placeId },
+        type: CollectionType.Public,
+        userCollections: { userId },
+      },
+    ]
+
+    if (jwtUserId) {
+      where.push({
+        placeCollections: { placeId },
+        type: CollectionType.Private,
+        userCollections: {
+          userId: jwtUserId,
+          collection: { userCollections: { userId } },
+        },
+      })
+    }
+
     return this.collectionsRepository.find({
-      where: [
-        {
-          placeCollections: { placeId },
-          type: CollectionType.Public,
-          userCollections: { userId },
-        },
-        {
-          placeCollections: { placeId },
-          type: CollectionType.Private,
-          userCollections: {
-            userId: jwtUserId,
-            collection: { userCollections: { userId } },
-          },
-        },
-      ],
+      where,
       relations: {
         author: true,
         userCollections: true,

@@ -15,7 +15,6 @@ import { UpdatePlaceCollectionsDto } from './dto/update-place-collections.dto'
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 import { JwtUserId } from 'common/decorators/user.decorator'
 import { GetPlacesQueryDto } from './dto/get-places-query.dto'
-import { UnsafeExtractUserJwtAuthGuard } from 'auth/guards/unsafe-extract-user-jwt-auth.guard'
 import { FindPlaceByOsmDataParamsDto } from './dto/find-place-by-osm-data-params.dto'
 import { FastifyRequest } from 'fastify'
 
@@ -35,7 +34,7 @@ export class PlacesController {
 
   @Get()
   @ApiBearerAuth()
-  @UseGuards(UnsafeExtractUserJwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findAll(@JwtUserId() jwtUserId: number, @Query() query: GetPlacesQueryDto) {
     return this.placesService.findAll(jwtUserId, query)
   }
